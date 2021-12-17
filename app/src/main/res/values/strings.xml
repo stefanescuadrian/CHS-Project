@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">PhotogMap</string>
+    <string name="appNameText">appNameText</string>
+    <string name="photogmap_app_name">PhotogMap</string>
+    <string name="create_new_account">Create new account</string>
+    <string name="your_email">Your email</string>
+    <string name="your_email_txt">your_email_edit_text</string>
+    <string name="your_password">Password</string>
+    <string name="your_repeat_password">Confirm password</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="register">Register</string>
+    <string name="already_registered_login_here">Already Registered ? Login Here</string>
+    <string name="login_here">Login Here!</string>
+    <string name="already_register">Already Register ?</string>
+    <string name="cover_image">Cover Image</string>
+    <string name="todo">TODO</string>
+    <string name="photog_map">Photog Map</string>
+</resources>
