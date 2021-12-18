@@ -36,9 +36,10 @@
         android:id="@+id/eEmailLogIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="48dp"
         android:ems="10"
         android:hint="@string/email"
+        android:importantForAutofill="no"
         android:inputType="textEmailAddress"
         android:minWidth="300dp"
         android:minHeight="48dp"
@@ -46,8 +47,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tLogin"
-        app:layout_constraintVertical_bias="0.0"
-        android:autofillHints="" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/ePasswordLogIn"
@@ -56,6 +56,7 @@
         android:layout_marginTop="4dp"
         android:ems="10"
         android:hint="@string/password"
+        android:importantForAutofill="no"
         android:inputType="textPassword"
         android:minWidth="300dp"
         android:minHeight="48dp"
@@ -64,7 +65,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/eEmailLogIn"
         app:layout_constraintVertical_bias="0.0"
-        android:autofillHints="" />
+        tools:ignore="TextContrastCheck" />
 
     <Spinner
         android:id="@+id/sRoleLogIn"
@@ -81,13 +82,14 @@
 
     <Button
         android:id="@+id/btnLogIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="147dp"
+        android:layout_height="55dp"
         android:layout_marginTop="8dp"
         android:text="@string/log_in"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sRoleLogIn" />
+        app:layout_constraintTop_toBottomOf="@+id/sRoleLogIn"
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -113,8 +115,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:clickable="true"
+            android:focusable="true"
+            android:minHeight="50dp"
             android:text="@string/create_account"
-            android:focusable="true" />
+            tools:ignore="TouchTargetSizeCheck" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
