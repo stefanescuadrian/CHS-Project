@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         android:fontFamily="sans-serif-condensed-light"
         android:text="@string/photog_map"
         android:textSize="38sp"
@@ -36,10 +36,9 @@
         android:id="@+id/eEmailLogIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="64dp"
         android:ems="10"
         android:hint="@string/email"
-        android:importantForAutofill="no"
         android:inputType="textEmailAddress"
         android:minWidth="300dp"
         android:minHeight="48dp"
@@ -47,7 +46,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tLogin"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+         />
 
     <EditText
         android:id="@+id/ePasswordLogIn"
@@ -65,7 +65,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/eEmailLogIn"
         app:layout_constraintVertical_bias="0.0"
-        tools:ignore="TextContrastCheck" />
+         />
 
     <Spinner
         android:id="@+id/sRoleLogIn"
@@ -82,14 +82,13 @@
 
     <Button
         android:id="@+id/btnLogIn"
-        android:layout_width="147dp"
-        android:layout_height="55dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/log_in"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sRoleLogIn"
-        tools:ignore="DuplicateSpeakableTextCheck" />
+        app:layout_constraintTop_toBottomOf="@+id/sRoleLogIn" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -115,10 +114,21 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:clickable="true"
-            android:focusable="true"
-            android:minHeight="50dp"
             android:text="@string/create_account"
-            tools:ignore="TouchTargetSizeCheck" />
+            android:focusable="true" />
+
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBarLogin"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
