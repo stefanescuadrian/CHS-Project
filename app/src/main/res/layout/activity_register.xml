@@ -34,7 +34,7 @@
         app:layout_constraintTop_toBottomOf="@+id/appNameTitle" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName7"
+        android:id="@+id/eFirstNameRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -46,10 +46,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tCreateNewAccount" />
+        app:layout_constraintTop_toBottomOf="@+id/tCreateNewAccount"
+        android:autofillHints="" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName8"
+        android:id="@+id/eLastNameRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -60,7 +61,8 @@
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName7" />
+        app:layout_constraintTop_toBottomOf="@+id/eFirstNameRegister"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/editTextTextPersonName9"
@@ -74,7 +76,8 @@
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName8" />
+        app:layout_constraintTop_toBottomOf="@+id/eLastNameRegister"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/editTextTextPersonName10"
@@ -88,7 +91,8 @@
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName9" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName9"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/editTextTextPersonName11"
@@ -102,7 +106,8 @@
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName10" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName10"
+        android:autofillHints="" />
 
     <Spinner
         android:id="@+id/spinner2"
