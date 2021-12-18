@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1053783769426",
+    "project_id": "photog-map",
+    "storage_bucket": "photog-map.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053783769426:android:0dd631edaa1df421b6ba8b",
+        "android_client_info": {
+          "package_name": "com.upt.cti.photogmap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1053783769426-iat0v6dbc9eqd2q4rqbt4tcmpi2cktv4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAv7zQGGNsQP5rhoNoKy4hE-YOOAYm8aVA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1053783769426-iat0v6dbc9eqd2q4rqbt4tcmpi2cktv4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
