@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         android:fontFamily="sans-serif-condensed-light"
         android:text="@string/photog_map"
         android:textSize="38sp"
@@ -26,7 +26,7 @@
         android:id="@+id/tLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/log_in"
+        android:text="@string/autentificare"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,8 +37,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
+        android:backgroundTint="#193D97"
         android:ems="10"
         android:hint="@string/email"
+        android:importantForAutofill="no"
         android:inputType="textEmailAddress"
         android:minWidth="300dp"
         android:minHeight="48dp"
@@ -46,14 +48,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tLogin"
-        app:layout_constraintVertical_bias="0.0"
-         />
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/ePasswordLogIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:backgroundTint="#193D97"
         android:ems="10"
         android:hint="@string/password"
         android:importantForAutofill="no"
@@ -64,13 +66,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/eEmailLogIn"
-        app:layout_constraintVertical_bias="0.0"
-         />
+        app:layout_constraintVertical_bias="0.0" />
 
     <Spinner
         android:id="@+id/sRoleLogIn"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:backgroundTint="#193D97"
         android:entries="@array/roles"
         android:minWidth="300dp"
         android:minHeight="48dp"
@@ -85,7 +87,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@string/log_in"
+        android:text="@string/autentificare"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sRoleLogIn" />
@@ -106,7 +108,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/new_here" />
+            android:text="@string/nu_ai_cont" />
 
         <TextView
             android:id="@+id/tCreateAccount"
@@ -114,8 +116,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:clickable="true"
-            android:text="@string/create_account"
-            android:focusable="true" />
+            android:focusable="true"
+            android:minHeight="100dp"
+            android:text="@string/inregistreaza_te"
+            tools:ignore="TouchTargetSizeCheck" />
 
     </LinearLayout>
 
@@ -129,6 +133,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.24000001" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

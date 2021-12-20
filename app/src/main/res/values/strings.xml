@@ -23,4 +23,7 @@
     <string name="create_account">Create Account</string>
     <string name="log_in">Log In</string>
     <string name="log_out">Log Out</string>
+    <string name="autentificare">Autentificare</string>
+    <string name="inregistreaza_te">Înregistrează-te</string>
+    <string name="nu_ai_cont">Nu ai cont ?</string>
 </resources>

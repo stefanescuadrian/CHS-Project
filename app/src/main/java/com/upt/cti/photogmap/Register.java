@@ -1,35 +1,43 @@
 package com.upt.cti.photogmap;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Register extends AppCompatActivity {
     EditText eFirstNameRegister, eLastNameRegister, eEmailRegister, ePasswordRegister, eConfirmPasswordRegister;
     Spinner sRoleRegister;
     Button btnRegister;
+    TextView tGoToLogin;
     ProgressBar progressBarRegister;
     FirebaseAuth firebaseAuth;
+    FirebaseFirestore firebaseFirestore;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
+        Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
         setContentView(R.layout.activity_register);
 
         eFirstNameRegister = findViewById(R.id.eFirstNameRegister);
@@ -40,8 +48,10 @@ public class Register extends AppCompatActivity {
         sRoleRegister = findViewById(R.id.sRoleRegister);
         btnRegister = findViewById(R.id.btnRegister);
         progressBarRegister = findViewById(R.id.progressBarRegister);
+        tGoToLogin = findViewById(R.id.tLoginHere);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
 
 
@@ -56,8 +66,9 @@ public class Register extends AppCompatActivity {
             String email = eEmailRegister.getText().toString().trim(); // get email
             String password = ePasswordRegister.getText().toString().trim(); // get password
             String confirmPassword = eConfirmPasswordRegister.getText().toString().trim(); //get confirm password
-            String firstName = eFirstNameRegister.getText().toString().trim(); //get confirm password
-            String lastName = eLastNameRegister.getText().toString().trim(); //get last name
+            String firstName = eFirstNameRegister.getText().toString(); //get confirm password
+            String lastName = eLastNameRegister.getText().toString(); //get last name
+            String role = sRoleRegister.getSelectedItem().toString();
 
 
             if (!(validateRegisterFields(email,password,confirmPassword,firstName,lastName))) {
@@ -70,16 +81,27 @@ public class Register extends AppCompatActivity {
             firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()){
                     Toast.makeText(Register.this, "User Created...", Toast.LENGTH_SHORT).show();
+                    // STORE ADDITIONAL DATA FOR USER CREATED TO CLOUD FIREBASE
+                    userID = firebaseAuth.getCurrentUser().getUid();
+                    DocumentReference documentReference = firebaseFirestore.collection("Users").document(userID);
+                    Map<String, Object> user = new HashMap<>();
+                    user.put("First Name", firstName);
+                    user.put("Last Name", lastName);
+                    user.put("Email", email);
+                    user.put("Tip utilizator", role);
+
+                    documentReference.set(user).addOnSuccessListener(unused -> Log.d("TAG", "onSuccess: Profilul utilizatorului a fost creat pentru: " + userID));
+
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 } else {
+                    progressBarRegister.setVisibility(View.GONE);
                     Toast.makeText(Register.this, "Error ! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
-
-
-
         });
 
+
+    tGoToLogin.setOnClickListener(v -> startActivity(new Intent(getApplicationContext(), Login.class)));
 
     }
 
