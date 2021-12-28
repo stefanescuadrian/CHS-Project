@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -16,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
@@ -26,6 +27,8 @@ public class Login extends AppCompatActivity {
     TextView tGoToRegister;
     ProgressBar progressBarLogin;
     FirebaseAuth firebaseAuth;
+    String userID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,7 @@ public class Login extends AppCompatActivity {
         btnLogin.setOnClickListener(v -> {
             String email = eEmailLogin.getText().toString().trim();
             String password = ePasswordLogin.getText().toString().trim();
+            String role = sRoleLogin.getSelectedItem().toString();
 
             if (!(validateLoginFields(email, password)))
             {
@@ -62,8 +66,24 @@ public class Login extends AppCompatActivity {
 
             firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()){
-                    Toast.makeText(Login.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    userID = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
+                    FirebaseFirestore firebaseFirestore;
+                    firebaseFirestore = FirebaseFirestore.getInstance();
+                    DocumentReference documentReference = firebaseFirestore.collection("Users").document(userID);
+
+                    documentReference.addSnapshotListener(this, (documentSnapshot, error) -> {
+                        assert documentSnapshot != null;
+                        String currentRole = documentSnapshot.getString("Tip utilizator"); //get the type of current user from database
+                        assert currentRole != null;
+                        if (currentRole.equals(role)) {
+                            Toast.makeText(Login.this, "Autentificare cu succes!", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        }
+                        else {
+                            progressBarLogin.setVisibility(View.GONE);
+                            Toast.makeText(Login.this, "Acest rol nu este înregistrat!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
                 else {
                     progressBarLogin.setVisibility(View.GONE);
