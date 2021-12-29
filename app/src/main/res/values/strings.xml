@@ -27,4 +27,8 @@
     <string name="inregistreaza_te">Înregistrează-te aici</string>
     <string name="nu_ai_cont">Nu ai cont ? </string>
     <string name="hello">Hello!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="profile">Profile</string>
+    <string name="profile2">Profile2</string>
 </resources>

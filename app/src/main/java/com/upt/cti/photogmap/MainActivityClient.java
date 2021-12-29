@@ -8,6 +8,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -21,6 +22,7 @@ public class MainActivityClient extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
         setContentView(R.layout.activity_main_client);
+
 
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
