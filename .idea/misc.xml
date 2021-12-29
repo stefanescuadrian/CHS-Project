@@ -3,8 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/CHS-Project/app/src/main/res/layout/activity_hello_client.xml" value="0.23822463768115942" />
+        <entry key="..\:/CHS-Project/app/src/main/res/layout/activity_hello_photographer.xml" value="0.17447916666666666" />
+        <entry key="..\:/CHS-Project/app/src/main/res/layout/activity_hello_user.xml" value="0.17447916666666666" />
         <entry key="..\:/CHS-Project/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/CHS-Project/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/CHS-Project/app/src/main/res/layout/activity_mainClient.xml" value="0.1" />
         <entry key="..\:/CHS-Project/app/src/main/res/layout/activity_register.xml" value="0.264" />
         <entry key="..\:/CHS_Project/CHS-Project/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/CHS_Project/CHS-Project/app/src/main/res/layout/activity_register.xml" value="0.176" />

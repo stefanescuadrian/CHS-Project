@@ -56,7 +56,7 @@ public class Register extends AppCompatActivity {
 
 
         if (firebaseAuth.getCurrentUser() != null){
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            startActivity(new Intent(getApplicationContext(), MainActivityPhotographer.class));
             finish();
         }
 
@@ -92,7 +92,7 @@ public class Register extends AppCompatActivity {
 
                     documentReference.set(user).addOnSuccessListener(unused -> Log.d("TAG", "onSuccess: Profilul utilizatorului a fost creat pentru: " + userID));
 
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    startActivity(new Intent(getApplicationContext(), MainActivityPhotographer.class));
                 } else {
                     progressBarRegister.setVisibility(View.GONE);
                     Toast.makeText(Register.this, "Error ! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();

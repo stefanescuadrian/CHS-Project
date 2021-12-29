@@ -77,7 +77,12 @@ public class Login extends AppCompatActivity {
                         assert currentRole != null;
                         if (currentRole.equals(role)) {
                             Toast.makeText(Login.this, "Autentificare cu succes!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            if (role.equals("Client")){
+                                startActivity(new Intent(getApplicationContext(), HelloClientActivity.class));
+                            }
+                            else if (role.equals("Fotograf")){
+                                startActivity(new Intent(getApplicationContext(), HelloPhotographerActivity.class));
+                            }
                         }
                         else {
                             progressBarLogin.setVisibility(View.GONE);

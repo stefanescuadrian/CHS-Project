@@ -2,8 +2,8 @@
 <resources>
 
     <string-array name="roles">
-        <item>User</item>
-        <item>Photographer</item>
+        <item>Client</item>
+        <item>Fotograf</item>
     </string-array>
 
 </resources>
