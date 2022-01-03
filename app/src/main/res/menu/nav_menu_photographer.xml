@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/ic_1"
+        android:id="@+id/ic_profile"
         android:icon="@mipmap/ic_profile_round"
         android:enabled="true"
         android:title="@string/profile"/>
 
     <item
         android:id="@+id/ic_2"
+        android:enabled="true"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="@string/profile2"/>
+
+    <item
+        android:id="@+id/ic_3"
         android:enabled="true"
         android:icon="@drawable/ic_launcher_background"
         android:title="@string/profile2"/>

@@ -1,24 +1,36 @@
 package com.upt.cti.photogmap;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
+
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.upt.cti.photogmap.photographerfragments.MapPhotographerFragment;
 import com.upt.cti.photogmap.photographerfragments.ProfilePhotographerFragment;
 
 import java.util.Objects;
 
-public class MainActivityPhotographer extends AppCompatActivity {
+public class MainActivityPhotographer extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
+    BottomNavigationView navPhotographer;
+    ProfilePhotographerFragment profilePhotographerFragment = new ProfilePhotographerFragment();
+    MapPhotographerFragment mapFragment = new MapPhotographerFragment();
+
 
 
     @Override
@@ -28,36 +40,40 @@ public class MainActivityPhotographer extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
         setContentView(R.layout.activity_main_photographer);
 
-        BottomNavigationView navClient;
 
-        Fragment profilePhotographerFragment = new ProfilePhotographerFragment();
-        Fragment mapFragment = new MapPhotographerFragment();
+        navPhotographer = findViewById(R.id.navPhotographer);
 
-        navClient = findViewById(R.id.navClient);
-        navClient.setItemIconTintList(null);
-      //  navClient.setSelectedItemId(R.id.ic_profile);
+        navPhotographer.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
 
-//        navClient.setOnItemSelectedListener(item -> {
-//            switch (item.getItemId()) {
-//                case R.id.ic_profile:
-//                    getSupportFragmentManager().beginTransaction().replace(R.id.container, profilePhotographerFragment).commit();
-//                    return true;
-//
-//                case R.id.ic_2:
-//                    getSupportFragmentManager().beginTransaction().replace(R.id.container, mapFragment).commit();
-//                    return true;
-//            }
-//            return false;
-//        });
+                case R.id.ic_profile:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, profilePhotographerFragment).commit();
+                    return true;
+
+                case R.id.ic_2:
+
+                case R.id.ic_3:
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, mapFragment).commit();
+                    return true;
+            }
+            return false;
+                }
+        );
+        navPhotographer.setSelectedItemId(R.id.ic_profile);
+        navPhotographer.setItemIconTintList(null);
 
     }
 
-
     public void logout(View view) {
+
         FirebaseAuth.getInstance().signOut(); //logout user from application
         startActivity(new Intent(getApplicationContext(), Login.class));
         finish();
     }
 
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
+    }
 }

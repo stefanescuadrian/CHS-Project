@@ -1,14 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:id="@+id/frameProfile"
     tools:context=".photographerfragments.ProfilePhotographerFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgProfilePicture"
+                android:layout_width="match_parent"
+                android:layout_height="124dp"
+                android:layout_marginTop="24dp"
+                android:src="@mipmap/ic_profile_round"
+                app:civ_border_width="2dp" />
+
+        <TextView
+            android:id="@+id/tFirstNameProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/tLastNameProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+
+            android:textAllCaps="true"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="64dp"
+        android:text="@string/telefon"
+        android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/tEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/email"
+
+            android:layout_gravity="center_horizontal"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/tRole"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tip_utilizator"
+            android:layout_gravity="center_horizontal"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/btnLogOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="logout"
+            android:text="@string/log_out"
+            tools:ignore="UsingOnClickInXml" />
+
+    </LinearLayout>
+
 
 </FrameLayout>

@@ -6,29 +6,39 @@
     android:layout_height="match_parent"
     tools:context=".MainActivityPhotographer">
 
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/navPhotographer"
+        android:layout_alignParentStart="true"
+
+        />
 
     <Button
         android:id="@+id/btnLogOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="65dp"
-        android:layout_marginTop="212dp"
+        android:layout_below="@+id/container"
+        android:layout_centerHorizontal="true"
         android:onClick="logout"
         android:text="@string/log_out"
         tools:ignore="UsingOnClickInXml" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navClient"
+        android:id="@+id/navPhotographer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="0dp"
         android:background="#FFFFFF"
         android:minHeight="50dp"
         app:labelVisibilityMode="labeled"
-        app:menu="@menu/nav_menu_photographer" />
+        app:menu="@menu/nav_menu_photographer">
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 
 </RelativeLayout>

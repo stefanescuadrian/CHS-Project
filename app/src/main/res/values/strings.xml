@@ -31,4 +31,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="profile">Profile</string>
     <string name="profile2">Profile2</string>
+    <string name="prenume">Prenume</string>
+    <string name="nume_de_familie">Nume de familie</string>
+    <string name="telefon">Telefon</string>
+    <string name="tip_de_utilizator">Tip de utilizator</string>
+    <string name="tip_utilizator">Tip utilizator</string>
 </resources>

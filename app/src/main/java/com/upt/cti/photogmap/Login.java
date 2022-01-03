@@ -105,17 +105,17 @@ public class Login extends AppCompatActivity {
 
     private boolean validateLoginFields(String email, String password){
         if (TextUtils.isEmpty(email)){
-            eEmailLogin.setError("Email is required!");
+            eEmailLogin.setError("Adresa de mail trebuie completata!");
             return false;
         }
 
         if (TextUtils.isEmpty(password)){
-            ePasswordLogin.setError("Password is required!");
+            ePasswordLogin.setError("Parola trebuie completata!");
             return false;
         }
 
         if (password.length() < 8){
-            ePasswordLogin.setError("Password must be greater than 8 characters!");
+            ePasswordLogin.setError("Parola trebuie sa fie mai mare de 8 caractere!");
             return false;
         }
 
