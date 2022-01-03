@@ -3,11 +3,12 @@ package com.upt.cti.photogmap;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -41,6 +42,7 @@ public class MainActivityPhotographer extends AppCompatActivity implements Navig
         setContentView(R.layout.activity_main_photographer);
 
 
+
         navPhotographer = findViewById(R.id.navPhotographer);
 
         navPhotographer.setOnItemSelectedListener(item -> {
@@ -51,7 +53,14 @@ public class MainActivityPhotographer extends AppCompatActivity implements Navig
                     return true;
 
                 case R.id.ic_2:
-
+                    FirebaseAuth.getInstance().signOut(); //logout user from application
+                    FirebaseFirestore.getInstance().terminate();
+                    Intent intent = new Intent(getApplicationContext(), Login.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("EXIT", true);
+                    startActivity(intent);
+                    finish();
+                    return true;
                 case R.id.ic_3:
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, mapFragment).commit();
                     return true;
@@ -65,9 +74,12 @@ public class MainActivityPhotographer extends AppCompatActivity implements Navig
     }
 
     public void logout(View view) {
-
         FirebaseAuth.getInstance().signOut(); //logout user from application
-        startActivity(new Intent(getApplicationContext(), Login.class));
+        FirebaseFirestore.getInstance().terminate();
+        Intent intent = new Intent(getApplicationContext(), Login.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("EXIT", true);
+        startActivity(intent);
         finish();
     }
 

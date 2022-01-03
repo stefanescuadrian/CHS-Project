@@ -102,7 +102,6 @@ public class ProfilePhotographerFragment extends Fragment {
 
         return view;
     }
-    
 
 
 }

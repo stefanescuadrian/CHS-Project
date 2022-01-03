@@ -70,8 +70,6 @@ public class Register extends AppCompatActivity {
                 boolean isClient = role.equals("Client");
                 int visibilityForPhone = isClient ? View.INVISIBLE : View.VISIBLE;
                 ePhoneNumber.setVisibility(visibilityForPhone);// set phone Number enable just if role is photographer
-
-
             }
 
             @Override
