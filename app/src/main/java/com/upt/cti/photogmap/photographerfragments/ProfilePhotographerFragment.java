@@ -33,6 +33,7 @@ public class ProfilePhotographerFragment extends Fragment {
     String userId;
     TextView tFirstName;
     TextView tLastName;
+    TextView tEmail, tRole, tPhone;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -83,6 +84,10 @@ public class ProfilePhotographerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile_photographer, container, false);
         tFirstName = view.findViewById(R.id.tFirstNameProfile);
         tLastName = view.findViewById(R.id.tLastNameProfile);
+        tEmail = view.findViewById(R.id.tEmail);
+        tRole = view.findViewById(R.id.tRole);
+        tPhone = view.findViewById(R.id.tPhone);
+
         firebaseAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
@@ -91,11 +96,14 @@ public class ProfilePhotographerFragment extends Fragment {
         System.out.println(documentReference);
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
 
-                assert value != null;
-                tFirstName.setText(value.getString("Prenume"));
-                tLastName.setText(value.getString("Nume de familie"));
+                assert documentSnapshot != null;
+                tFirstName.setText(documentSnapshot.getString("Prenume"));
+                tLastName.setText(documentSnapshot.getString("Nume de familie"));
+                tEmail.setText(documentSnapshot.getString("Adresă de mail"));
+                tPhone.setText(documentSnapshot.getString("Număr de telefon"));
+                tRole.setText(documentSnapshot.getString("Tip utilizator"));
             }
         });
 

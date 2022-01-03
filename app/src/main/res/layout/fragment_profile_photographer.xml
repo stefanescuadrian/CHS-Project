@@ -47,14 +47,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="64dp"
-        android:text="@string/telefon"
+
         android:textSize="24sp" />
 
         <TextView
             android:id="@+id/tEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/email"
+
 
             android:layout_gravity="center_horizontal"
             android:textSize="24sp" />
@@ -63,7 +63,7 @@
             android:id="@+id/tRole"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tip_utilizator"
+
             android:layout_gravity="center_horizontal"
             android:textSize="24sp" />
 
