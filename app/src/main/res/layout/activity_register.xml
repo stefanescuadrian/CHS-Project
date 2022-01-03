@@ -73,13 +73,13 @@
         android:layout_marginTop="4dp"
         android:ems="10"
         android:hint="@string/email"
+        android:importantForAutofill="no"
         android:inputType="textEmailAddress"
         android:minWidth="300dp"
         android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eLastNameRegister"
-        android:importantForAutofill="no" />
+        app:layout_constraintTop_toBottomOf="@+id/eLastNameRegister" />
 
     <EditText
         android:id="@+id/ePasswordRegister"
@@ -113,28 +113,46 @@
         app:layout_constraintTop_toBottomOf="@+id/ePasswordRegister"
         tools:ignore="TextContrastCheck" />
 
-    <Spinner
-        android:id="@+id/sRoleRegister"
+
+    <EditText
+        android:id="@+id/ePhoneNumber"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:entries="@array/roles"
+        android:ems="10"
+        android:hint="@string/num_r_de_telefon"
+        android:importantForAutofill="no"
+        android:inputType="phone"
         android:minWidth="300dp"
         android:minHeight="48dp"
-        android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eConfirmPasswordRegister" />
+        app:layout_constraintTop_toBottomOf="@+id/sRoleRegister"
+        tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:text="@string/register"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sRoleRegister" />
+        app:layout_constraintTop_toBottomOf="@+id/ePhoneNumber" />
+
+    <Spinner
+        android:id="@+id/sRoleRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:entries="@array/roles"
+        android:minWidth="300dp"
+        android:minHeight="48dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eConfirmPasswordRegister"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="399dp" />
 
     <LinearLayout
         android:id="@+id/llChangeToLogIn"
@@ -143,9 +161,10 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnRegister"
-        app:layout_constraintVertical_bias="0.288">
+        app:layout_constraintVertical_bias="0.2">
 
         <TextView
             android:id="@+id/tAlreadyRegister"
@@ -172,6 +191,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.903"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sRoleRegister" />
+        app:layout_constraintTop_toBottomOf="@+id/ePhoneNumber" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
