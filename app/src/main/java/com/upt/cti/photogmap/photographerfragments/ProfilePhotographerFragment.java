@@ -17,11 +17,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -31,6 +33,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.upt.cti.photogmap.MainActivityPhotographer;
 import com.upt.cti.photogmap.R;
 
@@ -58,6 +61,8 @@ public class ProfilePhotographerFragment extends Fragment {
     TextView tLastName;
     TextView tEmail, tRole, tPhone;
     ImageView imgProfilePicture;
+    FloatingActionButton fabChangeProfilePicture;
+    ProgressBar progressBarLoadPicture;
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
 
@@ -108,19 +113,47 @@ public class ProfilePhotographerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile_photographer, container, false);
+
         tFirstName = view.findViewById(R.id.tFirstNameProfile);
         tLastName = view.findViewById(R.id.tLastNameProfile);
         tEmail = view.findViewById(R.id.tEmail);
         tRole = view.findViewById(R.id.tRole);
         tPhone = view.findViewById(R.id.tPhone);
-        imgProfilePicture = view.findViewById(R.id.imgProfilePicture);
         firebaseAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
         storageReference = FirebaseStorage.getInstance().getReference();
+        imgProfilePicture = view.findViewById(R.id.imgProfilePicture);
+        fabChangeProfilePicture = view.findViewById(R.id.fabChangeProfilePicture);
+        progressBarLoadPicture = view.findViewById(R.id.progressBarLoadPicture);
 
+        imgProfilePicture.setVisibility(View.INVISIBLE);
+        fabChangeProfilePicture.setVisibility(View.INVISIBLE);
+        progressBarLoadPicture.setVisibility(View.VISIBLE);
+
+        StorageReference profileReference = storageReference.child("Users/"+firebaseAuth.getCurrentUser().getUid()+"/profile.jpg");
+        profileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+
+                Picasso.with(getActivity()).load(uri).into(imgProfilePicture);
+                progressBarLoadPicture.setVisibility(View.INVISIBLE);
+                imgProfilePicture.setVisibility(View.VISIBLE);
+                fabChangeProfilePicture.setVisibility(View.VISIBLE);
+            }
+        });
+
+        profileReference.getDownloadUrl().addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressBarLoadPicture.setVisibility(View.INVISIBLE);
+                imgProfilePicture.setVisibility(View.VISIBLE);
+                fabChangeProfilePicture.setVisibility(View.VISIBLE);
+            }
+        });
 
 
         imgProfilePicture.setOnClickListener(new View.OnClickListener(){
@@ -164,6 +197,7 @@ public class ProfilePhotographerFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1000){
             if (resultCode == Activity.RESULT_OK){
+                assert data != null;
                 Uri imgUri = data.getData();
                 imgProfilePicture.setImageURI(imgUri);
 
@@ -171,9 +205,10 @@ public class ProfilePhotographerFragment extends Fragment {
         }
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            assert data != null;
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imgProfilePicture.setImageBitmap(imageBitmap);
+            //imgProfilePicture.setImageBitmap(imageBitmap);
 
 
             File file = createImageFile();
@@ -217,11 +252,18 @@ public class ProfilePhotographerFragment extends Fragment {
 
 
     private void uploadImageToFirebase(Uri imageUri) {
-        StorageReference fileReference = storageReference.child("profile.jpg");
+
+        StorageReference fileReference = storageReference.child("Users/"+ Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid()+"/profile.jpg");
         fileReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(getActivity(), "Profile Image Uploaded...", Toast.LENGTH_SHORT).show();
+                fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Picasso.with(getActivity()).load(uri).into(imgProfilePicture);
+                    }
+                });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
