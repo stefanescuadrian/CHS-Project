@@ -1,13 +1,20 @@
 package com.upt.cti.photogmap.photographerfragments;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,6 +23,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.upt.cti.photogmap.MainActivityPhotographer;
 import com.upt.cti.photogmap.R;
 
@@ -28,12 +37,18 @@ import java.util.concurrent.Executor;
  * create an instance of this fragment.
  */
 public class ProfilePhotographerFragment extends Fragment {
+
     FirebaseAuth firebaseAuth;
     FirebaseFirestore fStore;
+    StorageReference storageReference;
     String userId;
     TextView tFirstName;
     TextView tLastName;
     TextView tEmail, tRole, tPhone;
+    ImageView imgProfilePicture;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -76,6 +91,7 @@ public class ProfilePhotographerFragment extends Fragment {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,10 +103,30 @@ public class ProfilePhotographerFragment extends Fragment {
         tEmail = view.findViewById(R.id.tEmail);
         tRole = view.findViewById(R.id.tRole);
         tPhone = view.findViewById(R.id.tPhone);
-
+        imgProfilePicture = view.findViewById(R.id.imgProfilePicture);
         firebaseAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
+        storageReference = FirebaseStorage.getInstance().getReference();
+
+
+
+        imgProfilePicture.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                try {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                } catch (ActivityNotFoundException e) {
+                    // display error state to the user
+                }
+
+//                //open gallery when click on profile photo
+//                Intent openGalleryIntent = new Intent (Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(openGalleryIntent, 1000);
+
+            }
+        });
 
         DocumentReference documentReference = fStore.collection("Users").document(userId);
         System.out.println(documentReference);
@@ -110,6 +146,26 @@ public class ProfilePhotographerFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1000){
+            if (resultCode == Activity.RESULT_OK){
+                Uri imgUri = data.getData();
+                imgProfilePicture.setImageURI(imgUri);
+
+            }
+        }
+
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imgProfilePicture.setImageBitmap(imageBitmap);
+        }
+
+    }
+
 
 
 }

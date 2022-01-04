@@ -9,8 +9,9 @@
     <item
         android:id="@+id/ic_2"
         android:enabled="true"
+        android:iconTint="@color/purple_200"
         android:icon="@drawable/ic_logout"
-        android:title="@string/logout"/>
+        android:title="@string/profile2"/>
 
     <item
         android:id="@+id/ic_3"

@@ -15,16 +15,6 @@
 
         />
 
-    <Button
-        android:id="@+id/btnLogOut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/container"
-        android:layout_centerHorizontal="true"
-        android:onClick="logout"
-        android:text="@string/log_out"
-        tools:ignore="UsingOnClickInXml" />
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navPhotographer"
         android:layout_width="match_parent"

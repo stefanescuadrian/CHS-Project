@@ -37,4 +37,5 @@
     <string name="tip_de_utilizator">Tip de utilizator</string>
     <string name="tip_utilizator">Tip utilizator</string>
     <string name="num_r_de_telefon">Număr de telefon</string>
+    <string name="logout">Logout</string>
 </resources>

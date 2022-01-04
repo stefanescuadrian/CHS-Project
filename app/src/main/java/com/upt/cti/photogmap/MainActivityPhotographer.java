@@ -73,15 +73,15 @@ public class MainActivityPhotographer extends AppCompatActivity implements Navig
 
     }
 
-    public void logout(View view) {
-        FirebaseAuth.getInstance().signOut(); //logout user from application
-        FirebaseFirestore.getInstance().terminate();
-        Intent intent = new Intent(getApplicationContext(), Login.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("EXIT", true);
-        startActivity(intent);
-        finish();
-    }
+//    public void logout(View view) {
+//        FirebaseAuth.getInstance().signOut(); //logout user from application
+//        FirebaseFirestore.getInstance().terminate();
+//        Intent intent = new Intent(getApplicationContext(), Login.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        intent.putExtra("EXIT", true);
+//        startActivity(intent);
+//        finish();
+//    }
 
 
     @Override
