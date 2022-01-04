@@ -2,11 +2,13 @@ package com.upt.cti.photogmap.photographerfragments;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -16,7 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -25,9 +30,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.upt.cti.photogmap.MainActivityPhotographer;
 import com.upt.cti.photogmap.R;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 
@@ -162,10 +174,62 @@ public class ProfilePhotographerFragment extends Fragment {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             imgProfilePicture.setImageBitmap(imageBitmap);
+
+
+            File file = createImageFile();
+
+            //get the uri from file created before
+            if (file != null){
+                FileOutputStream fout;
+                try {
+                    fout = new FileOutputStream(file);
+                    imageBitmap.compress(Bitmap.CompressFormat.PNG, 70, fout);
+                    fout.flush();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                Uri imageUri = Uri.fromFile(file);
+                uploadImageToFirebase(imageUri);
+            }
         }
 
     }
 
+    public File createImageFile(){
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File mFileTemp = null;
+        String root = getActivity().getDir("my_photo_dir", Context.MODE_PRIVATE).getAbsolutePath();
+        File myDir = new File (root + "/Img");
+        if (!myDir.exists()){
+            myDir.mkdirs();
+        }
+        try {
+            mFileTemp = File.createTempFile(imageFileName, ".jpg",myDir.getAbsoluteFile());
+        } catch (IOException e1){
+            e1.printStackTrace();
+        }
+        return mFileTemp;
+
+
+    }
+
+
+
+    private void uploadImageToFirebase(Uri imageUri) {
+        StorageReference fileReference = storageReference.child("profile.jpg");
+        fileReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(getActivity(), "Profile Image Uploaded...", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getActivity(), "Upload profile image failed...", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 
 }
