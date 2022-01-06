@@ -22,6 +22,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.upt.cti.photogmap.photographerfragments.GalleryPhotographerFragment;
 import com.upt.cti.photogmap.photographerfragments.MapPhotographerFragment;
 import com.upt.cti.photogmap.photographerfragments.ProfilePhotographerFragment;
 
@@ -31,6 +32,7 @@ public class MainActivityPhotographer extends AppCompatActivity implements Navig
     BottomNavigationView navPhotographer;
     ProfilePhotographerFragment profilePhotographerFragment = new ProfilePhotographerFragment();
     MapPhotographerFragment mapFragment = new MapPhotographerFragment();
+    GalleryPhotographerFragment myGalleryFragment = new GalleryPhotographerFragment();
 
 
 
@@ -62,7 +64,7 @@ public class MainActivityPhotographer extends AppCompatActivity implements Navig
                     finish();
                     return true;
                 case R.id.ic_3:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container, mapFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, myGalleryFragment).commit();
                     return true;
             }
             return false;

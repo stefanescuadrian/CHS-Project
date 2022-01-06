@@ -38,4 +38,13 @@
     <string name="tip_utilizator">Tip utilizator</string>
     <string name="num_r_de_telefon">Număr de telefon</string>
     <string name="logout">Logout</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="titlu_fotografie">Titlu fotografie</string>
+    <string name="descriere_fotografie">Descriere fotografie</string>
+    <string name="descrierea_fotografiei">Descrierea fotografiei</string>
+    <string name="titlul_fotografie">Titlul fotografiei</string>
+    <string name="titlul_fotografiei">Titlul fotografiei</string>
+    <string name="adauga_fotografie">Adaugă fotografie</string>
+    <string name="fotografia_ta_va_fi_afisata_aici">Fotografia ta va fi afișată aici</string>
 </resources>
