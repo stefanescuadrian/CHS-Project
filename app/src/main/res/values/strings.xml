@@ -47,4 +47,7 @@
     <string name="titlul_fotografiei">Titlul fotografiei</string>
     <string name="adauga_fotografie">Adaugă fotografie</string>
     <string name="fotografia_ta_va_fi_afisata_aici">Fotografia ta va fi afișată aici</string>
+    <string name="ncarc_alt_fotografie">Încarcă altă fotografie</string>
+    <string name="incarca_alta_fotografie">Încarcă altă fotografie</string>
+    <string name="my_gallery">My gallery</string>
 </resources>

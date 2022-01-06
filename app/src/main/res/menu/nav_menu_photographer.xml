@@ -13,8 +13,8 @@
         android:title="@string/logout"/>
 
     <item
-        android:id="@+id/ic_3"
+        android:id="@+id/ic_my_gallery"
         android:enabled="true"
-        android:icon="@drawable/ic_launcher_background"
-        android:title="@string/profile2"/>
+        android:icon="@drawable/ic_my_gallery_logo"
+        android:title="@string/my_gallery"/>
 </menu>

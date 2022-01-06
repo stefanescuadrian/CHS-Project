@@ -42,9 +42,6 @@ public class MainActivityPhotographer extends AppCompatActivity implements Navig
         requestWindowFeature(Window.FEATURE_NO_TITLE);//will hide the title
         Objects.requireNonNull(getSupportActionBar()).hide(); //hide the title bar
         setContentView(R.layout.activity_main_photographer);
-
-
-
         navPhotographer = findViewById(R.id.navPhotographer);
 
         navPhotographer.setOnItemSelectedListener(item -> {
@@ -63,7 +60,7 @@ public class MainActivityPhotographer extends AppCompatActivity implements Navig
                     startActivity(intent);
                     finish();
                     return true;
-                case R.id.ic_3:
+                case R.id.ic_my_gallery:
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, myGalleryFragment).commit();
                     return true;
             }

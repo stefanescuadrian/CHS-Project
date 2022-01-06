@@ -18,15 +18,25 @@
         android:id="@+id/btnAddPhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/imgUploaded"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/btnAddAnotherPhoto"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="32dp"
         android:backgroundTint="@color/black"
         android:text="@string/adauga_fotografie"
         android:textSize="12sp"
         android:textStyle="bold" />
 
+
+    <Button
+        android:id="@+id/btnAddAnotherPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+      android:layout_marginBottom="24dp"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="@color/black"
+        android:text="@string/incarca_alta_fotografie"
+        android:textSize="12sp"
+        android:textStyle="bold"/>
 
     <EditText
         android:id="@+id/ePhotoName"
@@ -38,6 +48,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginRight="16dp"
         android:hint="@string/titlul_fotografiei"
+        android:minHeight="48dp"
         android:textStyle="bold" />
 
     <EditText
@@ -48,6 +59,18 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:hint="@string/descrierea_fotografiei"
+        android:minHeight="48dp"
         android:textStyle="italic" />
+
+    <ProgressBar
+        android:id="@+id/progressBarUploadPhoto"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_above="@id/btnAddPhoto"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"/>
+
 
 </RelativeLayout>

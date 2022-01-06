@@ -78,18 +78,12 @@ public class GalleryPhotographerFragment extends Fragment {
         fabAddPhotosToMyGallery = view.findViewById(R.id.fabAddPhotosToMyGallery);
 
 
-        fabAddPhotosToMyGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), UploadPhotoActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("EXIT", true);
-                startActivity(intent);
+        fabAddPhotosToMyGallery.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), UploadPhotoActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("EXIT", true);
+            startActivity(intent);
 
-
-               // ePhotoName.setText("blablabla");
-
-            }
         });
 
 
