@@ -12,7 +12,11 @@ public class Upload {
 
     public Upload(String photoName, String photoDescription, String photoUrl){
         if (photoName.trim().equals("")){
-            photoName = "No Name";
+            photoName = "Fotografia nu are titlu...";
+        }
+
+        if (photoDescription.trim().equals("")){
+            photoDescription = "Fotografia nu are descriere...";
         }
 
         this.photoName = photoName;

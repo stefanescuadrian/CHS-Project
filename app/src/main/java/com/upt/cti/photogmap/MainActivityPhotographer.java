@@ -29,6 +29,7 @@ import com.upt.cti.photogmap.photographerfragments.ProfilePhotographerFragment;
 import java.util.Objects;
 
 public class MainActivityPhotographer extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
+    private static int lastSelectedItem = 0;
     BottomNavigationView navPhotographer;
     ProfilePhotographerFragment profilePhotographerFragment = new ProfilePhotographerFragment();
     MapPhotographerFragment mapFragment = new MapPhotographerFragment();
@@ -48,10 +49,12 @@ public class MainActivityPhotographer extends AppCompatActivity implements Navig
             switch (item.getItemId()) {
 
                 case R.id.ic_profile:
+                    lastSelectedItem = 0;
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, profilePhotographerFragment).commit();
                     return true;
 
                 case R.id.ic_2:
+                    lastSelectedItem = 1;
                     FirebaseAuth.getInstance().signOut(); //logout user from application
                     FirebaseFirestore.getInstance().terminate();
                     Intent intent = new Intent(getApplicationContext(), Login.class);
@@ -61,6 +64,7 @@ public class MainActivityPhotographer extends AppCompatActivity implements Navig
                     finish();
                     return true;
                 case R.id.ic_my_gallery:
+                    lastSelectedItem = 2;
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, myGalleryFragment).commit();
                     return true;
             }
@@ -81,7 +85,24 @@ public class MainActivityPhotographer extends AppCompatActivity implements Navig
 //        startActivity(intent);
 //        finish();
 //    }
+@Override
+protected void onRestart() {
+// TODO Auto-generated method stub
+    super.onRestart();
+    switch (lastSelectedItem){
+        case 0:
+            navPhotographer.setSelectedItemId(R.id.ic_profile);
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, profilePhotographerFragment).commit();
+            break;
+        case 2:
+            navPhotographer.setSelectedItemId(R.id.ic_my_gallery);
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, myGalleryFragment).commit();
+            break;
+    }
 
+
+    //Do your code here
+}
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

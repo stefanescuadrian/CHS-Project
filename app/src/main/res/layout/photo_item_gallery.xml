@@ -31,7 +31,7 @@
             android:textStyle="italic" />
 
         <ImageView
-            android:id="@+id/imageUpload"
+            android:id="@+id/uploadedPhotoView"
             android:layout_width="match_parent"
             android:layout_height="250dp" />
 

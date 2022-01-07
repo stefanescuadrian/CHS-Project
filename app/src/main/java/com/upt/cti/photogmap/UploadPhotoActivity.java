@@ -3,6 +3,7 @@ package com.upt.cti.photogmap;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -19,14 +20,17 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.upt.cti.photogmap.photographerfragments.GalleryPhotographerFragment;
 
 import java.util.Objects;
 
@@ -43,6 +47,7 @@ public class UploadPhotoActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
+    private StorageTask storageUploadTask;
 
 
     @Override
@@ -75,8 +80,22 @@ public class UploadPhotoActivity extends AppCompatActivity {
         btnAddPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadPhoto();
-                finish();
+                if (storageUploadTask != null && storageUploadTask.isInProgress()) {
+                    Toast.makeText(UploadPhotoActivity.this, "Se adaugă fotografia...", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    uploadPhoto();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            finish();
+
+
+                        }
+                    }, 3000);
+                }
             }
         });
 
@@ -85,7 +104,7 @@ public class UploadPhotoActivity extends AppCompatActivity {
     private void uploadPhoto() {
         if (imgUploadedUri != null){
             StorageReference photoReference = storageReference.child(System.currentTimeMillis() + "." + getFileExtension(imgUploadedUri));
-            photoReference.putFile(imgUploadedUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            storageUploadTask = photoReference.putFile(imgUploadedUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Handler handler = new Handler();
@@ -94,15 +113,23 @@ public class UploadPhotoActivity extends AppCompatActivity {
                         public void run() {
                             progressBarUploadPhoto.setProgress(0);
                         }
-                    }, 5000);
+                    }, 3000);
 
-                    Toast.makeText(UploadPhotoActivity.this, "Poza a fost adăugată", Toast.LENGTH_LONG).show();
-                    Upload upload = new Upload(ePhotoName.getText().toString().trim(), ePhotoDescription.getText().toString().trim(),
-                            Objects.requireNonNull(Objects.requireNonNull(taskSnapshot.getMetadata()).getReference()).getDownloadUrl().toString());
+                    Toast.makeText(UploadPhotoActivity.this, "Poza a fost adăugată...", Toast.LENGTH_LONG).show();
 
-                    String uploadID = databaseReference.push().getKey();
-                    assert uploadID != null;
-                    databaseReference.child(uploadID).setValue(upload);
+                    Task<Uri> task = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                    task.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String photoLink = uri.toString();
+                            Upload upload = new Upload(ePhotoName.getText().toString().trim(), ePhotoDescription.getText().toString().trim(),photoLink);
+
+                                    String uploadID = databaseReference.push().getKey();
+                            assert uploadID != null;
+                            databaseReference.child(uploadID).setValue(upload);
+                        }
+                    });
+
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -138,4 +165,5 @@ public class UploadPhotoActivity extends AppCompatActivity {
         }
 
     }
+
 }

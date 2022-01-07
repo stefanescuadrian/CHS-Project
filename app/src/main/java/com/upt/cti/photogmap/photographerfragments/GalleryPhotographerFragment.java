@@ -2,9 +2,13 @@ package com.upt.cti.photogmap.photographerfragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +16,24 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.upt.cti.photogmap.ImageAdapter;
 import com.upt.cti.photogmap.R;
+import com.upt.cti.photogmap.Upload;
 import com.upt.cti.photogmap.UploadPhotoActivity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -26,8 +42,13 @@ import java.util.Objects;
  * create an instance of this fragment.
  */
 public class GalleryPhotographerFragment extends Fragment {
-    private static final int PICK_IMAGE_REQUEST = 1;
-    FloatingActionButton fabAddPhotosToMyGallery;
+    private RecyclerView recyclerGalleryView;
+    private ImageAdapter imgAdapter;
+
+    private DatabaseReference databaseReference;
+    private List<Upload> uploadListPhotos;
+    private FirebaseAuth firebaseAuth;
+    private ProgressBar imgProgressCircle;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -75,10 +96,13 @@ public class GalleryPhotographerFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gallery_photographer, container, false);
-        fabAddPhotosToMyGallery = view.findViewById(R.id.fabAddPhotosToMyGallery);
+        FloatingActionButton fabAddPhotosToMyGallery = view.findViewById(R.id.fabAddPhotosToMyGallery);
 
 
         fabAddPhotosToMyGallery.setOnClickListener(v -> {
+            uploadListPhotos.clear();
+            getFragmentManager().beginTransaction().remove(this).commit();
+
             Intent intent = new Intent(getActivity(), UploadPhotoActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra("EXIT", true);
@@ -86,6 +110,36 @@ public class GalleryPhotographerFragment extends Fragment {
 
         });
 
+        imgProgressCircle = view.findViewById(R.id.progressMyGallery);
+
+        recyclerGalleryView = view.findViewById(R.id.recyclerGalleryView);
+        recyclerGalleryView.setHasFixedSize(true);
+        recyclerGalleryView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        uploadListPhotos = new ArrayList<>();
+        firebaseAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance("https://photog-map-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Gallery Uploads/"+ Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid());
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot postSnapshot : snapshot.getChildren()){
+                    Upload upload = postSnapshot.getValue(Upload.class);
+                    uploadListPhotos.add(upload);
+                }
+
+                imgAdapter = new ImageAdapter(getActivity(),uploadListPhotos);
+
+                recyclerGalleryView.setAdapter(imgAdapter);
+                imgProgressCircle.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getActivity(),error.getMessage(), Toast.LENGTH_SHORT).show();
+                imgProgressCircle.setVisibility(View.INVISIBLE);
+            }
+        });
 
         return view;
     }
