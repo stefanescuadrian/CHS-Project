@@ -104,13 +104,16 @@ public class Register extends AppCompatActivity {
                     userID = firebaseAuth.getCurrentUser().getUid();
                     DocumentReference documentReference = firebaseFirestore.collection("Users").document(userID);
                     Map<String, Object> user = new HashMap<>();
-                    user.put("Prenume", firstName);
-                    user.put("Nume de familie", lastName);
-                    user.put("Adresă de mail", email);
-                    user.put("Tip utilizator", role);
+                    user.put("firstName", firstName);
+                    user.put("lastName", lastName);
+                    user.put("mail", email);
+                    user.put("userType", role);
+
                     if (ePhoneNumber.getVisibility()==View.VISIBLE) {
                         String phoneNumber = ePhoneNumber.getText().toString(); // get phone number
-                        user.put("Număr de telefon", phoneNumber);
+                        user.put("phoneNumber", phoneNumber);
+                        user.put("score", 0);
+                        user.put("noOfVotes",0);
                     }
 
                     documentReference.set(user).addOnSuccessListener(unused -> Log.d("TAG", "onSuccess: Profilul utilizatorului a fost creat pentru: " + userID));

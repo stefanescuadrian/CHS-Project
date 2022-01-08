@@ -25,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.upt.cti.photogmap.photographerfragments.GalleryPhotographerFragment;
 import com.upt.cti.photogmap.photographerfragments.MapPhotographerFragment;
 import com.upt.cti.photogmap.photographerfragments.ProfilePhotographerFragment;
+import com.upt.cti.photogmap.photographerfragments.RankPhotographerFragment;
 
 import java.util.Objects;
 
@@ -34,6 +35,7 @@ public class MainActivityPhotographer extends AppCompatActivity implements Navig
     ProfilePhotographerFragment profilePhotographerFragment = new ProfilePhotographerFragment();
     MapPhotographerFragment mapFragment = new MapPhotographerFragment();
     GalleryPhotographerFragment myGalleryFragment = new GalleryPhotographerFragment();
+    RankPhotographerFragment rankPhotographerFragment = new RankPhotographerFragment();
 
 
 
@@ -54,7 +56,7 @@ public class MainActivityPhotographer extends AppCompatActivity implements Navig
                     return true;
 
                 case R.id.ic_2:
-                    lastSelectedItem = 1;
+                    lastSelectedItem = 2;
                     FirebaseAuth.getInstance().signOut(); //logout user from application
                     FirebaseFirestore.getInstance().terminate();
                     Intent intent = new Intent(getApplicationContext(), Login.class);
@@ -64,8 +66,12 @@ public class MainActivityPhotographer extends AppCompatActivity implements Navig
                     finish();
                     return true;
                 case R.id.ic_my_gallery:
-                    lastSelectedItem = 2;
+                    lastSelectedItem = 1;
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, myGalleryFragment).commit();
+                    return true;
+                case R.id.ic_1:
+                    lastSelectedItem = 3;
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, rankPhotographerFragment).commit();
                     return true;
             }
             return false;
@@ -87,21 +93,20 @@ public class MainActivityPhotographer extends AppCompatActivity implements Navig
 //    }
 @Override
 protected void onRestart() {
-// TODO Auto-generated method stub
+
     super.onRestart();
     switch (lastSelectedItem){
         case 0:
             navPhotographer.setSelectedItemId(R.id.ic_profile);
             getSupportFragmentManager().beginTransaction().replace(R.id.container, profilePhotographerFragment).commit();
             break;
-        case 2:
+        case 1:
             navPhotographer.setSelectedItemId(R.id.ic_my_gallery);
             getSupportFragmentManager().beginTransaction().replace(R.id.container, myGalleryFragment).commit();
             break;
     }
 
 
-    //Do your code here
 }
 
     @Override

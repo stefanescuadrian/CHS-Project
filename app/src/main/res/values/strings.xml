@@ -31,8 +31,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="profile">Profile</string>
     <string name="profile2">Profile2</string>
-    <string name="prenume">Prenume</string>
-    <string name="nume_de_familie">Nume de familie</string>
     <string name="telefon">Telefon</string>
     <string name="tip_de_utilizator">Tip de utilizator</string>
     <string name="tip_utilizator">Tip utilizator</string>
@@ -50,4 +48,9 @@
     <string name="ncarc_alt_fotografie">Încarcă altă fotografie</string>
     <string name="incarca_alta_fotografie">Încarcă altă fotografie</string>
     <string name="my_gallery">My gallery</string>
+    <string name="prenume">Prenume</string>
+    <string name="nume_de_familie">Nume de familie</string>
+    <string name="numar_de_telefon">Număr de telefon</string>
+    <string name="puncte">Puncte</string>
+    <string name="voturi">Voturi</string>
 </resources>

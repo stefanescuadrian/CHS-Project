@@ -180,11 +180,11 @@ public class ProfilePhotographerFragment extends Fragment {
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
 
                 assert documentSnapshot != null;
-                tFirstName.setText(documentSnapshot.getString("Prenume"));
-                tLastName.setText(documentSnapshot.getString("Nume de familie"));
-                tEmail.setText(documentSnapshot.getString("Adresă de mail"));
-                tPhone.setText(documentSnapshot.getString("Număr de telefon"));
-                tRole.setText(documentSnapshot.getString("Tip utilizator"));
+                tFirstName.setText(documentSnapshot.getString("firstName"));
+                tLastName.setText(documentSnapshot.getString("lastName"));
+                tEmail.setText(documentSnapshot.getString("mail"));
+                tPhone.setText(documentSnapshot.getString("phoneNumber"));
+                tRole.setText(documentSnapshot.getString("userType"));
             }
         });
 

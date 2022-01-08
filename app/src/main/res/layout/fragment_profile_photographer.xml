@@ -24,14 +24,16 @@
                 android:layout_marginTop="24dp"
                 android:src="@mipmap/ic_profile_round"
                 app:civ_border_width="2dp" />
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabChangeProfilePicture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:src="@drawable/ic_change_profile_picture"
-            android:contentDescription="TODO"
-            app:fabCustomSize="32dp"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabChangeProfilePicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:contentDescription="TODO"
+        android:minHeight="48dp"
+        android:src="@drawable/ic_change_profile_picture"
+        app:fabCustomSize="32dp" />
 
     <ProgressBar
         android:id="@+id/progressBarLoadPicture"

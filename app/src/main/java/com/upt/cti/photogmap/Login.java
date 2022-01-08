@@ -73,7 +73,7 @@ public class Login extends AppCompatActivity {
 
                     documentReference.addSnapshotListener(this, (documentSnapshot, error) -> {
                         assert documentSnapshot != null;
-                        String currentRole = documentSnapshot.getString("Tip utilizator"); //get the type of current user from database
+                        String currentRole = documentSnapshot.getString("userType"); //get the type of current user from database
                         assert currentRole != null;
                         if (currentRole.equals(role)) {
                             Toast.makeText(Login.this, "Autentificare cu succes!", Toast.LENGTH_SHORT).show();
