@@ -88,7 +88,7 @@ public class FetchAddressIntentService extends IntentService {
                 ArrayList<String> addresListFragments = new ArrayList<>();
                 for (int i = 0; i <= address.getMaxAddressLineIndex(); i++){
                     System.out.println(address);
-                    addresListFragments.add(locality +", " + county+", " + country);
+                    addresListFragments.add(locality +"," + county+"," + country);
                     System.out.println("fragmente:");
                     System.out.println(addresListFragments);
                 }

@@ -94,6 +94,9 @@ public class ProfilePhotographerFragment extends Fragment {
     ImageView imgProfilePicture;
     FloatingActionButton fabChangeProfilePicture;
     ProgressBar progressBarLoadPicture;
+    private TextView tLocality;
+    private TextView tCounty;
+    private TextView tCountry;
     Button btnSaveLocation;
     private boolean gps_enable = false;
     private boolean network_enable = false;
@@ -168,13 +171,15 @@ public class ProfilePhotographerFragment extends Fragment {
         tPhone = view.findViewById(R.id.tPhone);
         firebaseAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
+        tCountry = view.findViewById(R.id.tCountry);
+        tCounty = view.findViewById(R.id.tCounty);
+        tLocality = view.findViewById(R.id.tLocality);
         userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
         storageReference = FirebaseStorage.getInstance().getReference();
         imgProfilePicture = view.findViewById(R.id.imgProfilePicture);
         fabChangeProfilePicture = view.findViewById(R.id.fabChangeProfilePicture);
         progressBarLoadPicture = view.findViewById(R.id.progressBarLoadPicture);
         btnSaveLocation = view.findViewById(R.id.btnSaveLocation);
-        tLocation = view.findViewById(R.id.tLocation);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         resultReceiver = new AddressResultReceiver(new Handler());
         progressBarLoadLocation = view.findViewById(R.id.progressBarLoadLocation);
@@ -246,6 +251,20 @@ public class ProfilePhotographerFragment extends Fragment {
                 tEmail.setText(documentSnapshot.getString("mail"));
                 tPhone.setText(documentSnapshot.getString("phoneNumber"));
                 tRole.setText(documentSnapshot.getString("userType"));
+
+                if (documentSnapshot.getString("locality") != null){
+                    tLocality.setText(documentSnapshot.getString("locality"));
+                }
+
+                if (documentSnapshot.getString("county") != null){
+                    tCounty.setText(documentSnapshot.getString("county"));
+                }
+
+                if (documentSnapshot.getString("country") != null){
+                    tCountry.setText(documentSnapshot.getString("country"));
+                }
+
+
             }
         });
 
@@ -294,7 +313,7 @@ public class ProfilePhotographerFragment extends Fragment {
                     int latestLocationIndex = locationResult.getLocations().size() - 1;
                     double latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
                     double longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
-                    tLocation.setText(String.valueOf(latitude) + "," + String.valueOf(longitude));
+
 
 
                     Location location = new Location("providerNA");
@@ -332,10 +351,7 @@ public class ProfilePhotographerFragment extends Fragment {
             System.out.println(resultCode);
             if (resultCode == Constants.SUCCESS_RESULT){
 
-                tLocation.setText(resultData.getString(Constants.RESULT_DATA_KEY));
-
-
-                String address = tLocation.getText().toString();
+                String address = resultData.getString(Constants.RESULT_DATA_KEY);
 
                 String[] addressList = address.split(",");
 
@@ -347,6 +363,9 @@ public class ProfilePhotographerFragment extends Fragment {
                 county = addressList[1];
                 country = addressList[2];
 
+                tLocality.setText(locality);
+                tCountry.setText(country);
+                tCounty.setText(county);
 
                 String userID = firebaseAuth.getCurrentUser().getUid();
                 DocumentReference documentReference = fStore.collection("Users").document(userID);

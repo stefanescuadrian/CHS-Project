@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -49,6 +50,12 @@ public class PhotographerAdapter extends RecyclerView.Adapter<PhotographerAdapte
       holder.score.setText(String.valueOf(photographer.getScore()));
       holder.noOfVotes.setText(String.valueOf(photographer.getNoOfVotes()));
 
+      holder.btnVote.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              System.out.println("Voted!");
+          }
+      });
 
       holder.ratingPhotographer.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
           @Override
@@ -70,7 +77,7 @@ public class PhotographerAdapter extends RecyclerView.Adapter<PhotographerAdapte
         RelativeLayout photographerEntry;
         RatingBar ratingPhotographer;
 
-
+        Button btnVote;
         TextView firstName, lastName, mail, phoneNumber, score, noOfVotes;
 
         public PhotographerViewHolder(@NonNull View itemView) {
@@ -83,6 +90,7 @@ public class PhotographerAdapter extends RecyclerView.Adapter<PhotographerAdapte
             score = itemView.findViewById(R.id.tPhotographerScore);
             noOfVotes = itemView.findViewById(R.id.tPhotographerVotes);
             photographerEntry = itemView.findViewById(R.id.photographerEntry);
+            btnVote = itemView.findViewById(R.id.btnVote);
             ratingPhotographer = itemView.findViewById(R.id.ratingPhotographer);
 
 
