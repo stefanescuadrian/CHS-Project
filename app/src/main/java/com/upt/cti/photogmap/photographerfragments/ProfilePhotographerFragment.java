@@ -26,6 +26,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.ResultReceiver;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,8 +70,10 @@ import java.sql.SQLOutput;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 
@@ -95,7 +98,7 @@ public class ProfilePhotographerFragment extends Fragment {
     private boolean gps_enable = false;
     private boolean network_enable = false;
 
-    TextView tCity;
+    TextView tLocation;
     private ResultReceiver resultReceiver;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
@@ -171,7 +174,7 @@ public class ProfilePhotographerFragment extends Fragment {
         fabChangeProfilePicture = view.findViewById(R.id.fabChangeProfilePicture);
         progressBarLoadPicture = view.findViewById(R.id.progressBarLoadPicture);
         btnSaveLocation = view.findViewById(R.id.btnSaveLocation);
-        tCity = view.findViewById(R.id.tCity);
+        tLocation = view.findViewById(R.id.tLocation);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         resultReceiver = new AddressResultReceiver(new Handler());
         progressBarLoadLocation = view.findViewById(R.id.progressBarLoadLocation);
@@ -291,7 +294,8 @@ public class ProfilePhotographerFragment extends Fragment {
                     int latestLocationIndex = locationResult.getLocations().size() - 1;
                     double latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
                     double longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
-                    tCity.setText(String.valueOf(latitude));
+                    tLocation.setText(String.valueOf(latitude) + "," + String.valueOf(longitude));
+
 
                     Location location = new Location("providerNA");
                     location.setLatitude(latitude);
@@ -328,7 +332,31 @@ public class ProfilePhotographerFragment extends Fragment {
             System.out.println(resultCode);
             if (resultCode == Constants.SUCCESS_RESULT){
 
-                tCity.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+                tLocation.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+
+
+                String address = tLocation.getText().toString();
+
+                String[] addressList = address.split(",");
+
+                String county;
+                String locality;
+                String country;
+
+                locality = addressList[0];
+                county = addressList[1];
+                country = addressList[2];
+
+
+                String userID = firebaseAuth.getCurrentUser().getUid();
+                DocumentReference documentReference = fStore.collection("Users").document(userID);
+                Map<String, Object> user = new HashMap<>();
+                user.put("county", county);
+                user.put("locality", locality);
+                user.put("country", country);
+
+                documentReference.update(user);
+
             }
             else {
 

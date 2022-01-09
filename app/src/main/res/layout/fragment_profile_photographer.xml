@@ -106,12 +106,11 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/tCity"
+            android:id="@+id/tLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textSize="24sp"
-            android:text="@string/fara_locatie"
             />
 
 
