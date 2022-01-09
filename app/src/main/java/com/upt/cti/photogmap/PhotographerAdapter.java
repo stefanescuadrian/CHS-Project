@@ -3,8 +3,12 @@ package com.upt.cti.photogmap;
 import android.content.Context;
 import android.provider.ContactsContract;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,8 +46,16 @@ public class PhotographerAdapter extends RecyclerView.Adapter<PhotographerAdapte
       holder.lastName.setText(photographer.getLastName());
       holder.mail.setText(photographer.getMail());
       holder.phoneNumber.setText(photographer.getPhoneNumber());
-      holder.points.setText(String.valueOf(photographer.getScore()));
-      holder.votes.setText(String.valueOf(photographer.getNoOfVotes()));
+      holder.score.setText(String.valueOf(photographer.getScore()));
+      holder.noOfVotes.setText(String.valueOf(photographer.getNoOfVotes()));
+
+
+      holder.ratingPhotographer.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+          @Override
+          public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+              System.out.println("rating");
+          }
+      });
 
 
     }
@@ -55,7 +67,11 @@ public class PhotographerAdapter extends RecyclerView.Adapter<PhotographerAdapte
 
     public static class PhotographerViewHolder extends RecyclerView.ViewHolder{
 
-        TextView firstName, lastName, mail, phoneNumber, points, votes;
+        RelativeLayout photographerEntry;
+        RatingBar ratingPhotographer;
+
+
+        TextView firstName, lastName, mail, phoneNumber, score, noOfVotes;
 
         public PhotographerViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -64,8 +80,11 @@ public class PhotographerAdapter extends RecyclerView.Adapter<PhotographerAdapte
             lastName = itemView.findViewById(R.id.tPhotographerName);
             mail = itemView.findViewById(R.id.tPhotographerEmail);
             phoneNumber = itemView.findViewById(R.id.tPhotographerPhoneNumber);
-            points = itemView.findViewById(R.id.tPhotographerScore);
-            votes = itemView.findViewById(R.id.tPhotographerVotes);
+            score = itemView.findViewById(R.id.tPhotographerScore);
+            noOfVotes = itemView.findViewById(R.id.tPhotographerVotes);
+            photographerEntry = itemView.findViewById(R.id.photographerEntry);
+            ratingPhotographer = itemView.findViewById(R.id.ratingPhotographer);
+
 
 
 

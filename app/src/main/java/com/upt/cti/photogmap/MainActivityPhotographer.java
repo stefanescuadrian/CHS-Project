@@ -69,7 +69,7 @@ public class MainActivityPhotographer extends AppCompatActivity implements Navig
                     lastSelectedItem = 1;
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, myGalleryFragment).commit();
                     return true;
-                case R.id.ic_1:
+                case R.id.ic_rank:
                     lastSelectedItem = 3;
                     getSupportFragmentManager().beginTransaction().replace(R.id.container, rankPhotographerFragment).commit();
                     return true;

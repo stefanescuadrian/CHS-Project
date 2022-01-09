@@ -1,12 +1,15 @@
 package com.upt.cti.photogmap.photographerfragments;
 
 import android.app.ProgressDialog;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +32,7 @@ import com.upt.cti.photogmap.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -100,7 +104,7 @@ public class RankPhotographerFragment extends Fragment {
         progressDialog.setMessage("Fetching Data...");
         progressDialog.show();
 
-
+        photographersList = new ArrayList<Photographer>();
         recyclerPhotographersList = view.findViewById(R.id.recyclerPhotographersList);
 
         recyclerPhotographersList.setHasFixedSize(true);
@@ -108,13 +112,23 @@ public class RankPhotographerFragment extends Fragment {
         recyclerPhotographersList.setLayoutManager(linearLayoutManager);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
-        photographersList = new ArrayList<Photographer>();
+
         photographerAdapter = new PhotographerAdapter(getActivity(), photographersList);
 
         recyclerPhotographersList.setAdapter(photographerAdapter);
 
+
         EventChangeListener();
 
+        final SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.refreshLayout);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                RankPhotographerFragment rankPhotographerFragment = new RankPhotographerFragment();
+                requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, rankPhotographerFragment).commit();
+                pullToRefresh.setRefreshing(false);
+            }
+        });
 
 
 
@@ -132,9 +146,14 @@ public class RankPhotographerFragment extends Fragment {
     }
 
     private void EventChangeListener() {
-        firebaseFirestore.collection("Users").whereEqualTo("userType","Fotograf").orderBy("score", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        firebaseFirestore.collection("Users").orderBy("score", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+
+
+
+
                 if (error != null){
                     if (progressDialog.isShowing()){
                         progressDialog.dismiss();
@@ -144,18 +163,25 @@ public class RankPhotographerFragment extends Fragment {
                     return;
                 }
 
+                assert value != null;
                 for (DocumentChange documentChange : value.getDocumentChanges()){
                     photographersList.add(documentChange.getDocument().toObject(Photographer.class));
                 }
 
+
                 photographerAdapter.notifyDataSetChanged();
+                photographersList = new ArrayList<Photographer>();
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
             }
         });
 
+
+
     }
+
+
 
 
 }
