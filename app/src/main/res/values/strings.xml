@@ -53,4 +53,6 @@
     <string name="numar_de_telefon">Număr de telefon</string>
     <string name="puncte">Puncte</string>
     <string name="voturi">Voturi</string>
+    <string name="salveaza_locatia_curenta">Salvează locația curentă</string>
+    <string name="fara_locatie">Fara locatie</string>
 </resources>

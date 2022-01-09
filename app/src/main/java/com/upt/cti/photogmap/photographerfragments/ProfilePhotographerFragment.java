@@ -1,28 +1,49 @@
 package com.upt.cti.photogmap.photographerfragments;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.os.ResultReceiver;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -34,14 +55,21 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.upt.cti.photogmap.Constants;
+import com.upt.cti.photogmap.FetchAddressIntentService;
 import com.upt.cti.photogmap.MainActivityPhotographer;
 import com.upt.cti.photogmap.R;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.Executor;
@@ -63,7 +91,20 @@ public class ProfilePhotographerFragment extends Fragment {
     ImageView imgProfilePicture;
     FloatingActionButton fabChangeProfilePicture;
     ProgressBar progressBarLoadPicture;
+    Button btnSaveLocation;
+    private boolean gps_enable = false;
+    private boolean network_enable = false;
+
+    TextView tCity;
+    private ResultReceiver resultReceiver;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
+    ProgressBar progressBarLoadLocation;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    public String latitude, longitude;
+    private Geocoder geocoder;
+    private List<Address> myAddress;
+
 
 
 
@@ -129,12 +170,29 @@ public class ProfilePhotographerFragment extends Fragment {
         imgProfilePicture = view.findViewById(R.id.imgProfilePicture);
         fabChangeProfilePicture = view.findViewById(R.id.fabChangeProfilePicture);
         progressBarLoadPicture = view.findViewById(R.id.progressBarLoadPicture);
+        btnSaveLocation = view.findViewById(R.id.btnSaveLocation);
+        tCity = view.findViewById(R.id.tCity);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+        resultReceiver = new AddressResultReceiver(new Handler());
+        progressBarLoadLocation = view.findViewById(R.id.progressBarLoadLocation);
+        btnSaveLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              if (ContextCompat.checkSelfPermission(requireActivity().getApplicationContext(),Manifest.permission.ACCESS_FINE_LOCATION) !=
+              PackageManager.PERMISSION_GRANTED){
+                  ActivityCompat.requestPermissions(requireActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION_PERMISSION);
+              }
+              else {
+                  getCurrentLocation();
+              }
+            }
+        });
 
         imgProfilePicture.setVisibility(View.INVISIBLE);
         fabChangeProfilePicture.setVisibility(View.INVISIBLE);
         progressBarLoadPicture.setVisibility(View.VISIBLE);
 
-        StorageReference profileReference = storageReference.child("Users/"+firebaseAuth.getCurrentUser().getUid()+"/profile.jpg");
+        StorageReference profileReference = storageReference.child("Users/" + firebaseAuth.getCurrentUser().getUid() + "/profile.jpg");
         profileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -156,7 +214,7 @@ public class ProfilePhotographerFragment extends Fragment {
         });
 
 
-        imgProfilePicture.setOnClickListener(new View.OnClickListener(){
+        imgProfilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -190,6 +248,95 @@ public class ProfilePhotographerFragment extends Fragment {
 
 
         return view;
+    }
+
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_LOCATION_PERMISSION && grantResults.length > 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getCurrentLocation();
+            } else {
+                Toast.makeText(getActivity(), "Permisiuni refuzate pentru locație", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void getCurrentLocation() {
+        progressBarLoadLocation.setVisibility(View.VISIBLE);
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(3000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        LocationServices.getFusedLocationProviderClient(getActivity()).requestLocationUpdates(locationRequest, new LocationCallback() {
+            @Override
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                LocationServices.getFusedLocationProviderClient(getActivity()).removeLocationUpdates(this);
+                if (locationResult != null && locationResult.getLocations().size() > 0) {
+                    int latestLocationIndex = locationResult.getLocations().size() - 1;
+                    double latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
+                    double longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
+                    tCity.setText(String.valueOf(latitude));
+
+                    Location location = new Location("providerNA");
+                    location.setLatitude(latitude);
+                    location.setLongitude(longitude);
+                    fetchAddressFromLatLong(location);
+
+
+
+                } else {
+                    progressBarLoadLocation.setVisibility(View.GONE);
+                }
+
+                progressBarLoadLocation.setVisibility(View.VISIBLE);
+            }
+        }, Looper.getMainLooper());
+
+    }
+
+    private void fetchAddressFromLatLong(Location location){
+        Intent intent = new Intent(getActivity(), FetchAddressIntentService.class);
+        intent.putExtra(Constants.RECEIVER, resultReceiver);
+        intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);
+        requireActivity().startService(intent);
+    }
+
+    private class AddressResultReceiver extends ResultReceiver{
+        AddressResultReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            super.onReceiveResult(resultCode, resultData);
+            System.out.println(resultCode);
+            if (resultCode == Constants.SUCCESS_RESULT){
+
+                tCity.setText(resultData.getString(Constants.RESULT_DATA_KEY));
+            }
+            else {
+
+                Toast.makeText(getActivity(),resultData.getString(Constants.RESULT_DATA_KEY),Toast.LENGTH_SHORT).show();
+            }
+
+            progressBarLoadLocation.setVisibility(View.GONE);
+        }
     }
 
     @Override

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.upt.cti.photogmap">
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <queries>
         <intent>
@@ -16,9 +19,11 @@
         android:icon="@mipmap/ic_profile"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_profile_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PhotogMap">
+        android:theme="@style/Theme.PhotogMap"
+        tools:targetApi="m">
         <activity
             android:name=".UploadPhotoActivity"
             android:exported="false" />
@@ -46,6 +51,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".FetchAddressIntentService"/>
     </application>
 
 </manifest>
