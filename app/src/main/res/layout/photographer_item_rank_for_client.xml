@@ -7,14 +7,14 @@
     android:background="@drawable/border_background">
 
     <RelativeLayout
-        android:id="@+id/photographerEntry"
+        android:id="@+id/photographerEntry_Client"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/border_background">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgProfilePicturePhotographerItem"
+            android:id="@+id/imgProfilePicturePhotographerItem_Client"
             android:layout_width="120dp"
             android:layout_height="104dp"
             android:layout_alignParentStart="true"
@@ -28,7 +28,7 @@
             android:layout_width="120dp"
             android:layout_marginTop="5dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imgProfilePicturePhotographerItem"
+            android:layout_below="@+id/imgProfilePicturePhotographerItem_Client"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -61,7 +61,7 @@
             android:id="@+id/nameLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/imgProfilePicturePhotographerItem"
+            android:layout_toEndOf="@+id/imgProfilePicturePhotographerItem_Client"
             android:background="@drawable/border_background"
             android:gravity="center"
             android:orientation="horizontal">
@@ -91,7 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/nameLL"
-            android:layout_toEndOf="@+id/imgProfilePicturePhotographerItem"
+            android:layout_toEndOf="@+id/imgProfilePicturePhotographerItem_Client"
             android:background="@drawable/border_background"
             android:gravity="center"
             android:orientation="vertical">
@@ -157,7 +157,43 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/voteLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/infoLL"
+            android:layout_toEndOf="@+id/imgProfilePicturePhotographerItem_Client"
+            android:background="@drawable/border_background"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical">
 
+            <RatingBar
+                android:id="@+id/ratingPhotographer"
+                style="?android:attr/ratingBarStyleIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_marginStart="3dp"
+                android:gravity="center"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:stepSize="0.5" />
+
+            <Button
+                android:id="@+id/btnVote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="5dp"
+
+                android:layout_marginEnd="3dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/border_background"
+                android:gravity="center"
+                android:text="Votează" />
+        </LinearLayout>
 
     </RelativeLayout>
 

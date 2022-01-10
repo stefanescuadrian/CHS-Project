@@ -1,22 +1,29 @@
 package com.upt.cti.photogmap;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.Objects;
 
@@ -27,6 +34,7 @@ public class Login extends AppCompatActivity {
     TextView tGoToRegister;
     ProgressBar progressBarLogin;
     FirebaseAuth firebaseAuth;
+    FirebaseFirestore firebaseFirestore;
     String userID;
 
 
@@ -64,10 +72,11 @@ public class Login extends AppCompatActivity {
 
             //Authenticate the user
 
+
             firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()){
                     userID = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
-                    FirebaseFirestore firebaseFirestore;
+
                     firebaseFirestore = FirebaseFirestore.getInstance();
                     DocumentReference documentReference = firebaseFirestore.collection("Users").document(userID);
 
@@ -76,11 +85,17 @@ public class Login extends AppCompatActivity {
                         String currentRole = documentSnapshot.getString("userType"); //get the type of current user from database
                         assert currentRole != null;
                         if (currentRole.equals(role)) {
+
+
+
                             Toast.makeText(Login.this, "Autentificare cu succes!", Toast.LENGTH_SHORT).show();
                             if (role.equals("Client")){
+
+
                                 startActivity(new Intent(getApplicationContext(), HelloClientActivity.class));
                             }
                             else if (role.equals("Fotograf")){
+
                                 startActivity(new Intent(getApplicationContext(), HelloPhotographerActivity.class));
                             }
                         }

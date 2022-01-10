@@ -16,11 +16,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -41,7 +44,6 @@ import java.util.Objects;
  * create an instance of this fragment.
  */
 public class RankPhotographerFragment extends Fragment {
-    private RecyclerView recyclerPhotographersList;
     private ArrayList<Photographer> photographersList;
     private PhotographerAdapter photographerAdapter;
     private FirebaseFirestore firebaseFirestore;
@@ -55,10 +57,6 @@ public class RankPhotographerFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public RankPhotographerFragment() {
         // Required empty public constructor
@@ -86,8 +84,9 @@ public class RankPhotographerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            // TODO: Rename and change types of parameters
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+            String mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -96,10 +95,10 @@ public class RankPhotographerFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rank_photographer, container, false);
-
-
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false);
@@ -107,17 +106,48 @@ public class RankPhotographerFragment extends Fragment {
         progressDialog.show();
 
         photographersList = new ArrayList<Photographer>();
-        recyclerPhotographersList = view.findViewById(R.id.recyclerPhotographersList);
+        RecyclerView recyclerPhotographersList = view.findViewById(R.id.recyclerPhotographersList);
 
         recyclerPhotographersList.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerPhotographersList.setLayoutManager(linearLayoutManager);
 
-        firebaseFirestore = FirebaseFirestore.getInstance();
+
 
         photographerAdapter = new PhotographerAdapter(getActivity(), photographersList);
 
         recyclerPhotographersList.setAdapter(photographerAdapter);
+
+
+//        firebaseAuth = FirebaseAuth.getInstance();
+//        firebaseFirestore = FirebaseFirestore.getInstance();
+//        String userID =  Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid().toString();
+//
+//        System.out.println(userID);
+//        DocumentReference documentReference = firebaseFirestore.collection("Users").document(userID);
+//
+//        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+//
+//                assert documentSnapshot != null;
+//
+//               String userType = documentSnapshot.getString("userType");
+//
+//                assert userType != null;
+//
+//                if (userType.equals("Fotograf")){
+//                    View inflatedView = getLayoutInflater().inflate(R.layout.photographer_item_rank, container,false);
+//                    voteLL = inflatedView.findViewById(R.id.voteLL);
+//                    voteLL.setVisibility(View.GONE);
+//
+//               }
+//
+//
+//            }
+//        });
+
+
 
 
         EventChangeListener();
@@ -127,22 +157,11 @@ public class RankPhotographerFragment extends Fragment {
             @Override
             public void onRefresh() {
                 RankPhotographerFragment rankPhotographerFragment = new RankPhotographerFragment();
+
                 requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, rankPhotographerFragment).commit();
                 pullToRefresh.setRefreshing(false);
             }
         });
-
-
-
-//        firebaseAuth = FirebaseAuth.getInstance();
-//        databaseReference = FirebaseDatabase.getInstance("https://photog-map-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Gallery Uploads/"+ Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid());
-//        storageReference = FirebaseStorage.getInstance().getReference();
-//        firebaseFirestore = FirebaseFirestore.getInstance();
-//
-//        recyclerPhotographersList.setHasFixedSize(true);
-//        recyclerPhotographersList.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        photographerList = new ArrayList<>();
-
 
         return view;
     }

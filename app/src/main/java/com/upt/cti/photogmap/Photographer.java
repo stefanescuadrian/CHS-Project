@@ -56,12 +56,39 @@ public class Photographer {
     private String mail;
     private int score;
     private int noOfVotes;
+    private String county;
+    private String country;
+    private String locality;
+
+    public String getCounty() {
+        return county;
+    }
+
+    public void setCounty(String county) {
+        this.county = county;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getLocality() {
+        return locality;
+    }
+
+    public void setLocality(String locality) {
+        this.locality = locality;
+    }
 
     public Photographer() {
 
     }
 
-    public Photographer(String photographerName, String photographerSurname, String photographerPhoneNumber, String photographerEmail, int photographerPoints, int photographerVotes) {
+    public Photographer(String photographerName, String photographerSurname, String photographerPhoneNumber, String photographerEmail, int photographerPoints, int photographerVotes, String photographerCounty, String photographerLocality, String photographerCountry) {
 
         this.firstName = photographerName;
         this.lastName = photographerSurname;
@@ -69,6 +96,9 @@ public class Photographer {
         this.mail = photographerEmail;
         this.score = photographerPoints;
         this.noOfVotes = photographerVotes;
+        this.country = photographerCountry;
+        this.county = photographerCounty;
+        this.locality = photographerLocality;
     }
 
 

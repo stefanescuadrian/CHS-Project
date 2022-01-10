@@ -114,11 +114,21 @@ public class Register extends AppCompatActivity {
                         user.put("phoneNumber", phoneNumber);
                         user.put("score", 0);
                         user.put("noOfVotes",0);
+                        user.put("country", "Fără țară");
+                        user.put("county", "Fără județ");
+                        user.put("locality", "Fără localitate");
+
                     }
 
                     documentReference.set(user).addOnSuccessListener(unused -> Log.d("TAG", "onSuccess: Profilul utilizatorului a fost creat pentru: " + userID));
+                    if (role.equals("Client")){
+                        startActivity(new Intent(getApplicationContext(), MainActivityClient.class));
 
-                    startActivity(new Intent(getApplicationContext(), MainActivityPhotographer.class));
+                    }
+                    else {
+                        startActivity(new Intent(getApplicationContext(), MainActivityPhotographer.class));
+                    }
+
                 } else {
                     progressBarRegister.setVisibility(View.GONE);
                     Toast.makeText(Register.this, "Error ! " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
