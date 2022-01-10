@@ -12,7 +12,7 @@
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/activity_hello_client.xml" value="0.1" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/activity_hello_photographer.xml" value="0.1" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/activity_login.xml" value="0.15208333333333332" />
-        <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/activity_main_client.xml" value="0.1" />
+        <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/activity_main_client.xml" value="0.4" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/activity_main_photographer.xml" value="0.2" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/activity_register.xml" value="0.1" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/activity_upload_photo.xml" value="0.16" />
@@ -24,6 +24,7 @@
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/photo_item_gallery.xml" value="0.3451086956521739" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/photographer_item_rank.xml" value="0.4" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/menu-v26/nav_menu_photographer.xml" value="0.1640625" />
+        <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/menu/nav_menu_client.xml" value="0.26510416666666664" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/menu/nav_menu_photographer.xml" value="0.264" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/mipmap-anydpi-v26/ic_no_image.xml" value="0.18020833333333333" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/mipmap-anydpi-v26/ic_profile.xml" value="0.16822916666666668" />

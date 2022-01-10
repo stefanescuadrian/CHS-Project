@@ -32,6 +32,7 @@ public class Login extends AppCompatActivity {
     Spinner sRoleLogin;
     Button btnLogin;
     TextView tGoToRegister;
+
     ProgressBar progressBarLogin;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
@@ -47,6 +48,9 @@ public class Login extends AppCompatActivity {
 
 
 
+
+
+
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         eEmailLogin = findViewById(R.id.eEmailLogIn);
@@ -56,6 +60,35 @@ public class Login extends AppCompatActivity {
         tGoToRegister = findViewById(R.id.tCreateAccount);
         firebaseAuth = FirebaseAuth.getInstance();
         progressBarLogin = findViewById(R.id.progressBarLogin);
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+
+        if (firebaseAuth.getCurrentUser() != null){
+
+            String userID = firebaseAuth.getCurrentUser().getUid();
+            DocumentReference documentReference = firebaseFirestore.collection("Users").document(userID);
+            documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                    assert value != null;
+                    String userType;
+                    userType = value.getString("userType");
+
+                    assert userType != null;
+                    if (userType.equals("Client")){
+                        startActivity(new Intent(getApplicationContext(), HelloClientActivity.class));
+                        finish();
+                    }
+                    else {
+                        startActivity(new Intent(getApplicationContext(), HelloPhotographerActivity.class));
+                        finish();
+                    }
+
+                }
+            });
+
+        }
+
 
         btnLogin.setOnClickListener(v -> {
             String email = eEmailLogin.getText().toString().trim();
@@ -77,7 +110,7 @@ public class Login extends AppCompatActivity {
                 if (task.isSuccessful()){
                     userID = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
 
-                    firebaseFirestore = FirebaseFirestore.getInstance();
+
                     DocumentReference documentReference = firebaseFirestore.collection("Users").document(userID);
 
                     documentReference.addSnapshotListener(this, (documentSnapshot, error) -> {

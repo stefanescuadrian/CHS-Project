@@ -1,29 +1,20 @@
 package com.upt.cti.photogmap;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
-import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.upt.cti.photogmap.photographerfragments.GalleryPhotographerFragment;
-import com.upt.cti.photogmap.photographerfragments.MapPhotographerFragment;
+import com.upt.cti.photogmap.clientfragments.MapClientFragment;
 import com.upt.cti.photogmap.photographerfragments.ProfilePhotographerFragment;
 import com.upt.cti.photogmap.photographerfragments.RankPhotographerFragment;
 
@@ -33,7 +24,7 @@ public class MainActivityPhotographer extends AppCompatActivity implements Navig
     private static int lastSelectedItem = 0;
     BottomNavigationView navPhotographer;
     ProfilePhotographerFragment profilePhotographerFragment = new ProfilePhotographerFragment();
-    MapPhotographerFragment mapFragment = new MapPhotographerFragment();
+    MapClientFragment mapFragment = new MapClientFragment();
     GalleryPhotographerFragment myGalleryFragment = new GalleryPhotographerFragment();
     RankPhotographerFragment rankPhotographerFragment = new RankPhotographerFragment();
 

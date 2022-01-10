@@ -1,4 +1,4 @@
-package com.upt.cti.photogmap.photographerfragments;
+package com.upt.cti.photogmap.clientfragments;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import com.upt.cti.photogmap.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MapPhotographerFragment#newInstance} factory method to
+ * Use the {@link MapClientFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapPhotographerFragment extends Fragment {
+public class MapClientFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class MapPhotographerFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public MapPhotographerFragment() {
+    public MapClientFragment() {
         // Required empty public constructor
     }
 
@@ -39,8 +39,8 @@ public class MapPhotographerFragment extends Fragment {
      * @return A new instance of fragment BlankFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MapPhotographerFragment newInstance(String param1, String param2) {
-        MapPhotographerFragment fragment = new MapPhotographerFragment();
+    public static MapClientFragment newInstance(String param1, String param2) {
+        MapClientFragment fragment = new MapClientFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
