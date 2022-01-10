@@ -45,6 +45,7 @@ public class PhotographerAdapter extends RecyclerView.Adapter<PhotographerAdapte
     @Override
     public PhotographerAdapter.PhotographerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
+
         View v = LayoutInflater.from(context).inflate(R.layout.photographer_item_rank, parent, false);
 
 
@@ -69,20 +70,7 @@ public class PhotographerAdapter extends RecyclerView.Adapter<PhotographerAdapte
 
 
 
-//      holder.btnVote.setOnClickListener(new View.OnClickListener() {
-//          @Override
-//          public void onClick(View v) {
-//              System.out.println("Voted!");
-//          }
-//
-//      });
-//
-//      holder.ratingPhotographer.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-//          @Override
-//          public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-//              System.out.println("rating");
-//          }
-//      });
+
 
       holder.imgProfilePicturePhotographerItem.setOnClickListener(new View.OnClickListener() {
           @Override
@@ -126,8 +114,6 @@ public class PhotographerAdapter extends RecyclerView.Adapter<PhotographerAdapte
             score = itemView.findViewById(R.id.tPhotographerScore);
             noOfVotes = itemView.findViewById(R.id.tPhotographerVotes);
             photographerEntry = itemView.findViewById(R.id.photographerEntry);
-            btnVote = itemView.findViewById(R.id.btnVote);
-            ratingPhotographer = itemView.findViewById(R.id.ratingPhotographer);
             locality = itemView.findViewById(R.id.tPhotographerLocality);
             country = itemView.findViewById(R.id.tPhotographerCountry);
             county = itemView.findViewById(R.id.tPhotographerCounty);

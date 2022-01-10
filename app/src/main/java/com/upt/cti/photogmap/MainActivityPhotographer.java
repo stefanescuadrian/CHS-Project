@@ -14,7 +14,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.upt.cti.photogmap.photographerfragments.GalleryPhotographerFragment;
-import com.upt.cti.photogmap.clientfragments.MapClientFragment;
+import com.upt.cti.photogmap.clientfragments.VotePhotographerFragment;
 import com.upt.cti.photogmap.photographerfragments.ProfilePhotographerFragment;
 import com.upt.cti.photogmap.photographerfragments.RankPhotographerFragment;
 
@@ -24,7 +24,7 @@ public class MainActivityPhotographer extends AppCompatActivity implements Navig
     private static int lastSelectedItem = 0;
     BottomNavigationView navPhotographer;
     ProfilePhotographerFragment profilePhotographerFragment = new ProfilePhotographerFragment();
-    MapClientFragment mapFragment = new MapClientFragment();
+    VotePhotographerFragment mapFragment = new VotePhotographerFragment();
     GalleryPhotographerFragment myGalleryFragment = new GalleryPhotographerFragment();
     RankPhotographerFragment rankPhotographerFragment = new RankPhotographerFragment();
 

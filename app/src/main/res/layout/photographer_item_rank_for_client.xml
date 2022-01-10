@@ -33,7 +33,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tPhotographerScore"
+                android:id="@+id/tPhotographerScore_Client"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/border_background"
@@ -44,7 +44,7 @@
                 android:textStyle="italic|bold" />
 
             <TextView
-                android:id="@+id/tPhotographerVotes"
+                android:id="@+id/tPhotographerVotes_Client"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_marginStart="5dp"
@@ -58,7 +58,7 @@
 
 
         <LinearLayout
-            android:id="@+id/nameLL"
+            android:id="@+id/nameLL_Client"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/imgProfilePicturePhotographerItem_Client"
@@ -67,14 +67,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tPhotographerSurname"
+                android:id="@+id/tPhotographerSurname_Client"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/prenume"
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/tPhotographerName"
+                android:id="@+id/tPhotographerName_Client"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -87,10 +87,10 @@
 
 
         <LinearLayout
-            android:id="@+id/infoLL"
+            android:id="@+id/infoLL_Client"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/nameLL"
+            android:layout_below="@+id/nameLL_Client"
             android:layout_toEndOf="@+id/imgProfilePicturePhotographerItem_Client"
             android:background="@drawable/border_background"
             android:gravity="center"
@@ -98,7 +98,7 @@
 
 
             <TextView
-                android:id="@+id/tPhotographerEmail"
+                android:id="@+id/tPhotographerEmail_Client"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -107,7 +107,7 @@
                 android:textStyle="italic|bold" />
 
             <TextView
-                android:id="@+id/tPhotographerPhoneNumber"
+                android:id="@+id/tPhotographerPhoneNumber_Client"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -117,7 +117,7 @@
 
 
             <TextView
-                android:id="@+id/tPhotographerLocality"
+                android:id="@+id/tPhotographerLocality_Client"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
@@ -133,7 +133,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tPhotographerCounty"
+                    android:id="@+id/tPhotographerCounty_Client"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
@@ -143,7 +143,7 @@
                     android:textStyle="italic|bold" />
 
                 <TextView
-                    android:id="@+id/tPhotographerCountry"
+                    android:id="@+id/tPhotographerCountry_Client"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
@@ -161,7 +161,7 @@
             android:id="@+id/voteLL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/infoLL"
+            android:layout_below="@id/infoLL_Client"
             android:layout_toEndOf="@+id/imgProfilePicturePhotographerItem_Client"
             android:background="@drawable/border_background"
             android:clickable="true"
@@ -169,7 +169,7 @@
             android:orientation="vertical">
 
             <RatingBar
-                android:id="@+id/ratingPhotographer"
+                android:id="@+id/ratingPhotographer_Client"
                 style="?android:attr/ratingBarStyleIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -181,7 +181,7 @@
                 android:stepSize="0.5" />
 
             <Button
-                android:id="@+id/btnVote"
+                android:id="@+id/btnVote_Client"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
