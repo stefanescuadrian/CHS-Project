@@ -59,9 +59,18 @@ public class Photographer {
     private String county;
     private String country;
     private String locality;
+    private String userId;
 
     public String getCounty() {
         return county;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void setCounty(String county) {
@@ -88,7 +97,7 @@ public class Photographer {
 
     }
 
-    public Photographer(String photographerName, String photographerSurname, String photographerPhoneNumber, String photographerEmail, int photographerPoints, int photographerVotes, String photographerCounty, String photographerLocality, String photographerCountry) {
+    public Photographer(String photographerName, String photographerSurname, String photographerPhoneNumber, String photographerEmail, int photographerPoints, int photographerVotes, String photographerCounty, String photographerLocality, String photographerCountry, String userId) {
 
         this.firstName = photographerName;
         this.lastName = photographerSurname;
@@ -99,6 +108,7 @@ public class Photographer {
         this.country = photographerCountry;
         this.county = photographerCounty;
         this.locality = photographerLocality;
+        this.userId = userId;
     }
 
 

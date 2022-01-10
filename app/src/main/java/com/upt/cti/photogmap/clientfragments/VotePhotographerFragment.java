@@ -113,9 +113,9 @@ public class VotePhotographerFragment extends Fragment {
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                RankPhotographerFragment rankPhotographerFragment = new RankPhotographerFragment();
+                VotePhotographerFragment votePhotographerFragment = new VotePhotographerFragment();
 
-                requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.containerClient, rankPhotographerFragment).commit();
+                requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.containerClient, votePhotographerFragment).commit();
                 pullToRefresh.setRefreshing(false);
             }
         });

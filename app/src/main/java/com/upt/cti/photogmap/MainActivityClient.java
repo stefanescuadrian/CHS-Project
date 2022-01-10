@@ -53,7 +53,7 @@ public class MainActivityClient extends AppCompatActivity {
                     return false;
                 }
         );
-        navClient.setSelectedItemId(R.id.ic_profile);
+        navClient.setSelectedItemId(R.id.ic_rank);
         navClient.setItemIconTintList(null);
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }

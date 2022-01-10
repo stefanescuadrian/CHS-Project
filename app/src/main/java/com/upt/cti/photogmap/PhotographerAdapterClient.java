@@ -1,7 +1,10 @@
 package com.upt.cti.photogmap;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,8 +17,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -23,10 +29,13 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.StorageReference;
+import com.upt.cti.photogmap.clientfragments.VotePhotographerFragment;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -54,6 +63,8 @@ public class PhotographerAdapterClient extends RecyclerView.Adapter<Photographer
 
     @Override
     public void onBindViewHolder(@NonNull PhotographerAdapterClient.PhotographerClientViewHolder holder, int position) {
+
+
         Photographer photographer = photographerArrayList.get(position);
 
 
@@ -70,20 +81,123 @@ public class PhotographerAdapterClient extends RecyclerView.Adapter<Photographer
 
 
 
-//      holder.btnVote.setOnClickListener(new View.OnClickListener() {
-//          @Override
-//          public void onClick(View v) {
-//              System.out.println("Voted!");
-//          }
-//
-//      });
-//
-//      holder.ratingPhotographer.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-//          @Override
-//          public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-//              System.out.println("rating");
-//          }
-//      });
+      holder.btnVote.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              FirebaseFirestore firebaseFirestore;
+              FirebaseAuth firebaseAuth;
+              firebaseFirestore = FirebaseFirestore.getInstance();
+              firebaseAuth = FirebaseAuth.getInstance();
+
+              String userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
+
+              double currentRating = holder.ratingPhotographer.getRating();
+
+
+              System.out.println(holder.ratingPhotographer.getRating());
+              System.out.println(photographer.getUserId());
+
+
+
+
+
+             DocumentReference documentReference = firebaseFirestore.collection("Votes").document(userId+photographer.getUserId());
+
+             documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                  @RequiresApi(api = Build.VERSION_CODES.N)
+                  @Override
+                  public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                       if(task.isSuccessful()){
+                           DocumentSnapshot documentSnapshot = task.getResult();
+
+                           Map<String, Object> vote = new HashMap<>();
+                           vote.put("VoteBy",userId);
+                           vote.put("VoteFor",photographer.getUserId());
+                           vote.put("Score", holder.ratingPhotographer.getRating());
+                           vote.put("Voted", 1);
+
+                           if (documentSnapshot.exists()){
+                               int lastScore = Integer.valueOf(Math.toIntExact(documentSnapshot.getLong("Score")));
+
+
+                               documentReference.update(vote).addOnSuccessListener(unused -> Log.d("TAG", "onSuccess: Votul a fost adăugat cu succes " + userId));
+
+                               DocumentReference documentReference1 = firebaseFirestore.collection("Users").document(photographer.getUserId());
+
+                               documentReference1.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                   @Override
+                                   public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                       if (task.isSuccessful()) {
+                                           DocumentSnapshot documentSnapshot1 = task.getResult();
+
+                                           int scoreFromDatabase =  Integer.valueOf(Math.toIntExact(documentSnapshot1.getLong("score")));
+
+
+
+
+                                           int score = (int) (holder.ratingPhotographer.getRating() + scoreFromDatabase - lastScore);
+
+
+                                           Map<String, Object> update_votes = new HashMap<>();
+                                           update_votes.put("score", score);
+
+                                           documentReference1.update(update_votes).addOnSuccessListener(unused -> Log.d("TAG", "onSuccess: Votul a fost actualizat " + photographer.getUserId()));
+
+                                       }
+                                   }
+                               });
+
+
+                           }
+                           else {
+                               documentReference.set(vote).addOnSuccessListener(unused -> Log.d("TAG", "onSuccess: Votul a fost actualizat cu succes " + userId));
+
+
+                               DocumentReference documentReference1 = firebaseFirestore.collection("Users").document(photographer.getUserId());
+
+                               documentReference1.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                   @Override
+                                   public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                       if (task.isSuccessful()) {
+                                           DocumentSnapshot documentSnapshot1 = task.getResult();
+                                           int noOfVotesFromDatabase = photographer.getNoOfVotes();
+                                           int scoreFromDatabase = photographer.getScore();
+
+
+                                           int noOfVotes = 1 + noOfVotesFromDatabase;
+                                           int score = (int) (holder.ratingPhotographer.getRating() + scoreFromDatabase);
+
+
+                                           Map<String, Object> update_votes = new HashMap<>();
+                                           update_votes.put("noOfVotes", noOfVotes);
+                                           update_votes.put("score", score);
+
+                                           documentReference1.update(update_votes).addOnSuccessListener(unused -> Log.d("TAG", "onSuccess: Votul a fost actualizat " + photographer.getUserId()));
+
+                                       }
+                                   }
+                               });
+
+
+                           }
+                       } else
+                       {
+                           Log.d("notExists!", "Failed with ", task.getException());
+                       }
+                  }
+              });
+
+
+
+
+
+
+
+              System.out.println("Voted!");
+          }
+
+      });
+
 
         holder.imgProfilePicturePhotographerItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,13 +209,6 @@ public class PhotographerAdapterClient extends RecyclerView.Adapter<Photographer
         });
 
 
-              holder.btnVote.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              System.out.println("Voted!");
-          }
-
-      });
 
       holder.ratingPhotographer.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
           @Override

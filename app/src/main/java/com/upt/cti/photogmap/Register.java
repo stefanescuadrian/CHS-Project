@@ -119,7 +119,10 @@ public class Register extends AppCompatActivity {
                         user.put("county", "Fără județ");
                         user.put("locality", "Fără localitate");
 
+
                     }
+
+                    user.put("userId", userID);
 
                     documentReference.set(user).addOnSuccessListener(unused -> Log.d("TAG", "onSuccess: Profilul utilizatorului a fost creat pentru: " + userID));
                     if (role.equals("Client")){
