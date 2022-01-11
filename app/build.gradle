@@ -28,7 +28,11 @@ android {
     }
 }
 
+
+
+
 dependencies {
+    implementation 'me.spark:submitbutton:1.0.1'
     implementation 'com.mikhaellopez:circularimageview:4.3.0'
     implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'

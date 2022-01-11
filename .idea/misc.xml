@@ -3,16 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/drawable/blue_outline.xml" value="0.26614583333333336" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/drawable/border_background.xml" value="0.37864583333333335" />
+        <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/drawable/custom_button.xml" value="0.1" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/drawable/ic_add_fab.xml" value="0.37864583333333335" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/drawable/ic_change_profile_picture.xml" value="0.16822916666666668" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/drawable/ic_my_gallery_logo.xml" value="0.16822916666666668" />
+        <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/drawable/ic_vote.xml" value="0.18697916666666667" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/drawable/image_view_circle_format.xml" value="0.37864583333333335" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/drawable/image_view_circle_layer_list.xml" value="0.37864583333333335" />
+        <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout-v23/photographer_item_rank_for_client.xml" value="0.536" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/activity_hello_client.xml" value="0.1" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/activity_hello_photographer.xml" value="0.1" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/activity_login.xml" value="0.15208333333333332" />
-        <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/activity_main_client.xml" value="0.4" />
+        <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/activity_main_client.xml" value="0.264" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/activity_main_photographer.xml" value="0.2" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/activity_register.xml" value="0.1" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/activity_upload_photo.xml" value="0.16" />
@@ -21,12 +25,13 @@
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/fragment_map_client.xml" value="0.15208333333333332" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/fragment_profile_photographer.xml" value="0.264" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/fragment_rank_photographer.xml" value="0.152" />
-        <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/fragment_vote_client.xml" value="0.259375" />
+        <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/fragment_vote_client.xml" value="0.4" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/photo_item_gallery.xml" value="0.3451086956521739" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/photographer_item_rank.xml" value="0.4" />
-        <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/photographer_item_rank_for_client.xml" value="0.259375" />
+        <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/layout/photographer_item_rank_for_client.xml" value="0.6" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/menu-v26/nav_menu_photographer.xml" value="0.1640625" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/menu/nav_menu_client.xml" value="0.26510416666666664" />
+        <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/menu/nav_menu_client_vote.xml" value="0.3697916666666667" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/menu/nav_menu_photographer.xml" value="0.264" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/mipmap-anydpi-v26/ic_no_image.xml" value="0.18020833333333333" />
         <entry key="..\:/PhotogMap/CHS-Project/app/src/main/res/mipmap-anydpi-v26/ic_profile.xml" value="0.16822916666666668" />

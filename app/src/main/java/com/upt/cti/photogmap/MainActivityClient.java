@@ -2,21 +2,32 @@ package com.upt.cti.photogmap;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.SearchView;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.upt.cti.photogmap.clientfragments.VotePhotographerFragment;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivityClient extends AppCompatActivity {
     private static int lastSelectedItem = 0;
     BottomNavigationView navClient;
     VotePhotographerFragment voteClientFragment = new VotePhotographerFragment();
+    Spinner filterLocality;
 
 
     @Override
@@ -27,6 +38,10 @@ public class MainActivityClient extends AppCompatActivity {
         setContentView(R.layout.activity_main_client);
         navClient = findViewById(R.id.navClient);
 
+        filterLocality = findViewById(R.id.filterLocality);
+
+
+
         navClient.setOnItemSelectedListener(item -> {
                     switch (item.getItemId()) {
 
@@ -36,7 +51,7 @@ public class MainActivityClient extends AppCompatActivity {
                             return true;
 
                         case R.id.ic_favorites:
-
+                            Objects.requireNonNull(getSupportActionBar()).hide();
                             return true;
 
                         case R.id.ic_logout:
@@ -57,6 +72,4 @@ public class MainActivityClient extends AppCompatActivity {
         navClient.setItemIconTintList(null);
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
-
-
 }

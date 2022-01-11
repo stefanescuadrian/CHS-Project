@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,7 +42,9 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PhotographerAdapterClient extends RecyclerView.Adapter<PhotographerAdapterClient.PhotographerClientViewHolder>{
+    private static final int POSITION_NONE = 0;
     private String userType;
+
     Context context;
     ArrayList<Photographer> photographerArrayList;
 
@@ -60,6 +63,8 @@ public class PhotographerAdapterClient extends RecyclerView.Adapter<Photographer
 
         return new PhotographerClientViewHolder(v);
     }
+
+
 
     @Override
     public void onBindViewHolder(@NonNull PhotographerAdapterClient.PhotographerClientViewHolder holder, int position) {
@@ -164,6 +169,8 @@ public class PhotographerAdapterClient extends RecyclerView.Adapter<Photographer
                                            int scoreFromDatabase = photographer.getScore();
 
 
+
+
                                            int noOfVotes = 1 + noOfVotesFromDatabase;
                                            int score = (int) (holder.ratingPhotographer.getRating() + scoreFromDatabase);
 
@@ -189,11 +196,11 @@ public class PhotographerAdapterClient extends RecyclerView.Adapter<Photographer
 
 
 
-
-
-
+              Toast.makeText(v.getContext(), "Voted...", Toast.LENGTH_SHORT).show();
 
               System.out.println("Voted!");
+
+
           }
 
       });
@@ -259,5 +266,6 @@ public class PhotographerAdapterClient extends RecyclerView.Adapter<Photographer
 
         }
     }
+
 
 }

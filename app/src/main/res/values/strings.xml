@@ -55,4 +55,5 @@
     <string name="voturi">Voturi</string>
     <string name="salveaza_locatia_curenta">Salvează locația curentă</string>
     <string name="fara_locatie">Fara locatie</string>
+    <string name="localitate">Localitate</string>
 </resources>

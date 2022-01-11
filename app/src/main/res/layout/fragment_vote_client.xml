@@ -11,6 +11,7 @@
         android:layout_height="match_parent">
 
 
+
         <ProgressBar
             android:id="@+id/progressRankPhotographers_Client"
             android:layout_centerInParent="true"
@@ -22,6 +23,7 @@
             android:id="@+id/recyclerPhotographersList_Client"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
             android:layout_alignParentStart="true"
             android:layout_margin="15dp"/>
     </RelativeLayout>

@@ -3,6 +3,7 @@ package com.upt.cti.photogmap.clientfragments;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,31 +14,40 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.upt.cti.photogmap.Photographer;
-import com.upt.cti.photogmap.PhotographerAdapter;
 import com.upt.cti.photogmap.PhotographerAdapterClient;
 import com.upt.cti.photogmap.R;
-import com.upt.cti.photogmap.photographerfragments.RankPhotographerFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link VotePhotographerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VotePhotographerFragment extends Fragment {
+public class VotePhotographerFragment extends Fragment{
 
     private ArrayList<Photographer> photographersList;
     private PhotographerAdapterClient photographerAdapterClient;
+    private static String filter = "All";
+
+
     private FirebaseFirestore firebaseFirestore;
+    Spinner spinnerWithLocality;
     ProgressDialog progressDialog;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -74,6 +84,9 @@ public class VotePhotographerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -83,48 +96,108 @@ public class VotePhotographerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup containerClient,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_vote_client, containerClient, false);
+
+        spinnerWithLocality = getActivity().findViewById(R.id.filterLocality);
         firebaseFirestore = FirebaseFirestore.getInstance();
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Fetching Data...");
-        progressDialog.show();
+        List<String> filterArray = new ArrayList<String>();
+        spinnerWithLocality = getActivity().findViewById(R.id.filterLocality);
+        filterArray.add("All");
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
-
-        photographersList = new ArrayList<Photographer>();
-        RecyclerView recyclerPhotographersList_Client = view.findViewById(R.id.recyclerPhotographersList_Client);
-
-        recyclerPhotographersList_Client.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        recyclerPhotographersList_Client.setLayoutManager(linearLayoutManager);
-
-
-
-        photographerAdapterClient = new PhotographerAdapterClient(getActivity(), photographersList);
-
-        recyclerPhotographersList_Client.setAdapter(photographerAdapterClient);
-
-
-
-        EventChangeListener();
-
-        final SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.refreshLayout);
-        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        firebaseFirestore.collection("Users").whereEqualTo("userType", "Fotograf").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onRefresh() {
-                VotePhotographerFragment votePhotographerFragment = new VotePhotographerFragment();
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()){
+                    for (QueryDocumentSnapshot document: task.getResult()) {
+                        String locality = document.getString("locality");
+                        System.out.println(locality);
+                        System.out.println("\n");
+                        if (locality != null) {
+                            filterArray.add(locality);
+                        }
+                    }
 
-                requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.containerClient, votePhotographerFragment).commit();
-                pullToRefresh.setRefreshing(false);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, filterArray);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spinnerWithLocality.setAdapter(adapter);
+                    filter = spinnerWithLocality.getSelectedItem().toString();
+                }
+                else {
+                    System.out.println("ERROR");
+                }
             }
         });
 
-        return view;
+
+        // Inflate the layout for this fragment
+        View view1 = inflater.inflate(R.layout.fragment_vote_client, containerClient, false);
+
+
+
+
+
+        spinnerWithLocality.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                filter = spinnerWithLocality.getSelectedItem().toString();
+
+                firebaseFirestore = FirebaseFirestore.getInstance();
+                progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setCancelable(false);
+                progressDialog.setMessage("Fetching Data...");
+                progressDialog.show();
+
+
+                photographersList = new ArrayList<Photographer>();
+                RecyclerView recyclerPhotographersList_Client = view1.findViewById(R.id.recyclerPhotographersList_Client);
+
+                recyclerPhotographersList_Client.setHasFixedSize(true);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+                recyclerPhotographersList_Client.setLayoutManager(linearLayoutManager);
+
+
+
+                photographerAdapterClient = new PhotographerAdapterClient(getActivity(), photographersList);
+
+                recyclerPhotographersList_Client.setAdapter(photographerAdapterClient);
+
+
+
+                EventChangeListener();
+
+                final SwipeRefreshLayout pullToRefresh = view1.findViewById(R.id.refreshLayout);
+                pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        VotePhotographerFragment votePhotographerFragment = new VotePhotographerFragment();
+                        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.containerClient, votePhotographerFragment).commit();
+                        pullToRefresh.setRefreshing(false);
+                    }
+                });
+
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+        return view1;
     }
 
     private void EventChangeListener() {
-        firebaseFirestore.collection("Users").orderBy("score", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        Query query;
+        if (filter == "All"){
+            query = firebaseFirestore.collection("Users").orderBy("score", Query.Direction.DESCENDING);
+        } else {
+             query = firebaseFirestore.collection("Users").orderBy("score", Query.Direction.DESCENDING).whereEqualTo("locality",filter);
+        }
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
@@ -154,5 +227,6 @@ public class VotePhotographerFragment extends Fragment {
 
 
     }
+
 
 }
