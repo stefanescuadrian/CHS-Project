@@ -19,7 +19,9 @@
             android:id="@+id/imgProfilePicturePhotographerItem_Client"
             android:layout_width="120dp"
             android:layout_height="104dp"
+
             android:layout_marginTop="3dp"
+
             android:clickable="true"
             android:focusable="true"
             android:src="@mipmap/ic_profile_round"
@@ -34,9 +36,9 @@
             <Button
                 android:id="@+id/btnAddFavoritePhotographer"
                 android:layout_width="80dp"
-                android:layout_height="30dp"
+                android:layout_height="28dp"
                 android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="1dp"
                 android:background="@drawable/custom_button"
                 android:focusableInTouchMode="true"
                 android:foreground="@drawable/ic_favorites"
@@ -225,7 +227,7 @@
 
             <Button
                 android:id="@+id/btnVote_Client"
-                android:layout_width="80dp"
+                android:layout_width="120dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_marginStart="8dp"

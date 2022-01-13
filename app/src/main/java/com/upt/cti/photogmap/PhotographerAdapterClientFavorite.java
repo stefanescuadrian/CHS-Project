@@ -2,6 +2,7 @@ package com.upt.cti.photogmap;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.upt.cti.photogmap.clientfragments.GalleryPhotographerFragment_Client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,6 +79,9 @@ public class PhotographerAdapterClientFavorite extends RecyclerView.Adapter<Phot
         holder.county.setText(String.valueOf(photographer.getCounty()));
         holder.country.setText(String.valueOf(photographer.getCountry()));
         holder.locality.setText(String.valueOf(photographer.getLocality()));
+
+        float avg = (float) photographer.getScore() / (float) photographer.getNoOfVotes();
+        holder.tAvg.setText(String.valueOf(avg));
 
 
 
@@ -252,6 +259,25 @@ public class PhotographerAdapterClientFavorite extends RecyclerView.Adapter<Phot
           }
       });
 
+        holder.imgProfilePicturePhotographerItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println(photographer.getFirstName());
+                AppCompatActivity activity =(AppCompatActivity) v.getContext();
+                GalleryPhotographerFragment_Client galleryPhotographerFragment_client = new GalleryPhotographerFragment_Client();
+                Bundle args = new Bundle();
+
+                Spinner spinner = activity.findViewById(R.id.filterLocality);
+                spinner.setVisibility(View.GONE);
+                args.putString("photographerId",photographer.getUserId());
+                galleryPhotographerFragment_client.setArguments(args);
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.containerClient, galleryPhotographerFragment_client).commit();
+
+                //Todo : Open photographer gallery when click on its image
+            }
+        });
+
+
 
     }
 
@@ -283,6 +309,9 @@ public class PhotographerAdapterClientFavorite extends RecyclerView.Adapter<Phot
                                                }
                                            });
 
+
+
+
     }
 
     @Override
@@ -297,7 +326,7 @@ public class PhotographerAdapterClientFavorite extends RecyclerView.Adapter<Phot
 
 
         Button btnVote;
-        TextView firstName, lastName, mail, phoneNumber, score, noOfVotes, locality, county, country;
+        TextView firstName, lastName, mail, phoneNumber, score, noOfVotes, locality, county, country, tAvg;
         CircleImageView imgProfilePicturePhotographerItem;
 
         public PhotographerClientViewHolder(@NonNull View itemView) {
@@ -323,7 +352,7 @@ public class PhotographerAdapterClientFavorite extends RecyclerView.Adapter<Phot
             country = itemView.findViewById(R.id.tPhotographerCountry_Client);
             county = itemView.findViewById(R.id.tPhotographerCounty_Client);
             imgProfilePicturePhotographerItem = itemView.findViewById(R.id.imgProfilePicturePhotographerItem_Client);
-
+            tAvg = itemView.findViewById(R.id.tAvg);
 
         }
     }
