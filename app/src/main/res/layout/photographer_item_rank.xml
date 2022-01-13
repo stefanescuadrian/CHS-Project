@@ -26,35 +26,25 @@
 
         <LinearLayout
             android:layout_width="120dp"
-            android:layout_marginTop="5dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imgProfilePicturePhotographerItem"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tPhotographerScore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border_background"
-                android:padding="3dp"
-                android:layout_gravity="center"
-                android:text="@string/puncte"
-                android:textSize="16sp"
-                android:textStyle="italic|bold" />
 
             <TextView
-                android:id="@+id/tPhotographerVotes"
-                android:layout_gravity="center"
+                android:id="@+id/tAvgPhotographer"
                 android:layout_width="wrap_content"
-                android:layout_marginStart="5dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border_background"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
                 android:padding="3dp"
-                android:text="@string/voturi"
+                android:text="Average"
                 android:textSize="16sp"
                 android:textStyle="italic|bold" />
         </LinearLayout>
+
 
 
         <LinearLayout
@@ -131,7 +121,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical">
-
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
                 <TextView
                     android:id="@+id/tPhotographerCounty"
                     android:layout_width="wrap_content"
@@ -151,6 +143,36 @@
                     android:text="Țară"
                     android:textSize="16sp"
                     android:textStyle="italic|bold" />
+            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/tPhotographerScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/border_background"
+                        android:padding="3dp"
+                        android:text="@string/puncte"
+                        android:textSize="16sp"
+                        android:textStyle="italic|bold" />
+
+                    <TextView
+                        android:id="@+id/tPhotographerVotes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:background="@drawable/border_background"
+                        android:padding="3dp"
+                        android:text="@string/voturi"
+                        android:textSize="16sp"
+                        android:textStyle="italic|bold" />
+
+                </LinearLayout>
+
+
 
             </LinearLayout>
 

@@ -201,25 +201,32 @@ public class ProfilePhotographerFragment extends Fragment {
         progressBarLoadPicture.setVisibility(View.VISIBLE);
 
         StorageReference profileReference = storageReference.child("Users/" + firebaseAuth.getCurrentUser().getUid() + "/profile.jpg");
-        profileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
 
-                Picasso.with(getActivity()).load(uri).into(imgProfilePicture);
-                progressBarLoadPicture.setVisibility(View.INVISIBLE);
-                imgProfilePicture.setVisibility(View.VISIBLE);
-                fabChangeProfilePicture.setVisibility(View.VISIBLE);
-            }
-        });
 
-        profileReference.getDownloadUrl().addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressBarLoadPicture.setVisibility(View.INVISIBLE);
-                imgProfilePicture.setVisibility(View.VISIBLE);
-                fabChangeProfilePicture.setVisibility(View.VISIBLE);
-            }
-        });
+       // boolean profilePhotoExists = profileReference.getDownloadUrl().isSuccessful();
+
+
+            profileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+
+                    Picasso.with(getActivity()).load(uri).into(imgProfilePicture);
+                    progressBarLoadPicture.setVisibility(View.INVISIBLE);
+                    imgProfilePicture.setVisibility(View.VISIBLE);
+                    fabChangeProfilePicture.setVisibility(View.VISIBLE);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressBarLoadPicture.setVisibility(View.INVISIBLE);
+                    imgProfilePicture.setVisibility(View.VISIBLE);
+                    fabChangeProfilePicture.setVisibility(View.VISIBLE);
+                }
+            });
+
+
+
+
 
 
         imgProfilePicture.setOnClickListener(new View.OnClickListener() {
@@ -294,22 +301,16 @@ public class ProfilePhotographerFragment extends Fragment {
         locationRequest.setFastestInterval(3000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
             return;
         }
         LocationServices.getFusedLocationProviderClient(getActivity()).requestLocationUpdates(locationRequest, new LocationCallback() {
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
                 super.onLocationResult(locationResult);
-                LocationServices.getFusedLocationProviderClient(getActivity()).removeLocationUpdates(this);
-                if (locationResult != null && locationResult.getLocations().size() > 0) {
+                LocationServices.getFusedLocationProviderClient(requireActivity()).removeLocationUpdates(this);
+                if (locationResult.getLocations().size() > 0) {
                     int latestLocationIndex = locationResult.getLocations().size() - 1;
                     double latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
                     double longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
@@ -367,7 +368,7 @@ public class ProfilePhotographerFragment extends Fragment {
                 tCountry.setText(country);
                 tCounty.setText(county);
 
-                String userID = firebaseAuth.getCurrentUser().getUid();
+                String userID = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
                 DocumentReference documentReference = fStore.collection("Users").document(userID);
                 Map<String, Object> user = new HashMap<>();
                 user.put("county", county);
@@ -428,10 +429,10 @@ public class ProfilePhotographerFragment extends Fragment {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File mFileTemp = null;
-        String root = getActivity().getDir("my_photo_dir", Context.MODE_PRIVATE).getAbsolutePath();
+        String root = requireActivity().getDir("my_photo_dir", Context.MODE_PRIVATE).getAbsolutePath();
         File myDir = new File (root + "/Img");
         if (!myDir.exists()){
-            myDir.mkdirs();
+           boolean b = myDir.mkdirs();
         }
         try {
             mFileTemp = File.createTempFile(imageFileName, ".jpg",myDir.getAbsoluteFile());
@@ -445,26 +446,13 @@ public class ProfilePhotographerFragment extends Fragment {
 
 
 
-    private void uploadImageToFirebase(Uri imageUri) {
+    public void uploadImageToFirebase(Uri imageUri) {
 
         StorageReference fileReference = storageReference.child("Users/"+ Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid()+"/profile.jpg");
-        fileReference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(getActivity(), "Profile Image Uploaded...", Toast.LENGTH_SHORT).show();
-                fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Picasso.with(getActivity()).load(uri).into(imgProfilePicture);
-                    }
-                });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getActivity(), "Upload profile image failed...", Toast.LENGTH_SHORT).show();
-            }
-        });
+        fileReference.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
+            Toast.makeText(getActivity(), "Profile Image Uploaded...", Toast.LENGTH_SHORT).show();
+            fileReference.getDownloadUrl().addOnSuccessListener(uri -> Picasso.with(getActivity()).load(uri).into(imgProfilePicture));
+        }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Upload profile image failed...", Toast.LENGTH_SHORT).show());
     }
 
 

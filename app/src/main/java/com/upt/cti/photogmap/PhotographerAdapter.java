@@ -67,7 +67,8 @@ public class PhotographerAdapter extends RecyclerView.Adapter<PhotographerAdapte
       holder.county.setText(String.valueOf(photographer.getCounty()));
       holder.country.setText(String.valueOf(photographer.getCountry()));
       holder.locality.setText(String.valueOf(photographer.getLocality()));
-
+       float avg = (float) photographer.getScore() / (float) photographer.getNoOfVotes();
+       holder.tAvg.setText(String.valueOf(avg));
 
 
 
@@ -94,7 +95,7 @@ public class PhotographerAdapter extends RecyclerView.Adapter<PhotographerAdapte
         RatingBar ratingPhotographer;
 
         Button btnVote;
-        TextView firstName, lastName, mail, phoneNumber, score, noOfVotes, locality, county, country;
+        TextView firstName, lastName, mail, phoneNumber, score, noOfVotes, locality, county, country, tAvg;
         CircleImageView imgProfilePicturePhotographerItem;
 
         public PhotographerViewHolder(@NonNull View itemView) {
@@ -118,6 +119,7 @@ public class PhotographerAdapter extends RecyclerView.Adapter<PhotographerAdapte
             country = itemView.findViewById(R.id.tPhotographerCountry);
             county = itemView.findViewById(R.id.tPhotographerCounty);
             imgProfilePicturePhotographerItem = itemView.findViewById(R.id.imgProfilePicturePhotographerItem);
+            tAvg = itemView.findViewById(R.id.tAvgPhotographer);
 
         }
     }

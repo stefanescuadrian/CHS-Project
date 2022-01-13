@@ -1,6 +1,7 @@
 package com.upt.cti.photogmap;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,15 +15,26 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +48,7 @@ public class Register extends AppCompatActivity {
     ProgressBar progressBarRegister;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
+    FirebaseDatabase firebaseDatabase;
     String userID;
 
     @Override
@@ -64,6 +77,7 @@ public class Register extends AppCompatActivity {
 
 
 
+
         sRoleRegister.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -78,8 +92,7 @@ public class Register extends AppCompatActivity {
 
             }
         });
-
-        //Actions to do when Register button is clicked
+        // Actions to do when Register button is clicked
         btnRegister.setOnClickListener(v -> {
 
             String email = eEmailRegister.getText().toString().trim(); // get email
@@ -97,12 +110,17 @@ public class Register extends AppCompatActivity {
 
             progressBarRegister.setVisibility(View.VISIBLE);
 
+
+
             //Create User With Email And Password
             firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
                 if (task.isSuccessful()){
                     Toast.makeText(Register.this, "User Created...", Toast.LENGTH_SHORT).show();
                     // STORE ADDITIONAL DATA FOR USER CREATED TO CLOUD FIREBASE
                     userID = firebaseAuth.getCurrentUser().getUid();
+
+
+
                     DocumentReference documentReference = firebaseFirestore.collection("Users").document(userID);
                     Map<String, Object> user = new HashMap<>();
                     user.put("firstName", firstName);
