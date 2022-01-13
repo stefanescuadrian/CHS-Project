@@ -119,7 +119,6 @@ public class VotePhotographerFragment extends Fragment{
                         }
                     }
 
-                    filterArray.add("favorites");
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, filterArray);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

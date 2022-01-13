@@ -50,11 +50,13 @@ public class MainActivityClient extends AppCompatActivity {
 
                         case R.id.ic_rank:
                             lastSelectedItem = 0;
+                            filterLocality.setVisibility(View.VISIBLE);
                             getSupportFragmentManager().beginTransaction().replace(R.id.containerClient, voteClientFragment).commit();
                             return true;
 
                         case R.id.ic_favorites:
                             lastSelectedItem = 1;
+                            filterLocality.setVisibility(View.VISIBLE);
                             Button button = findViewById(R.id.btnAddFavoritePhotographer);
                             getSupportFragmentManager().beginTransaction().replace(R.id.containerClient, favoritePhotographerFragment).commit();
                             return true;

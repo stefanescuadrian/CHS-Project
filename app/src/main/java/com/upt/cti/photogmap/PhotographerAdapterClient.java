@@ -3,6 +3,7 @@ package com.upt.cti.photogmap;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,12 +15,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,7 +38,9 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.StorageReference;
+import com.upt.cti.photogmap.clientfragments.GalleryPhotographerFragment_Client;
 import com.upt.cti.photogmap.clientfragments.VotePhotographerFragment;
+import com.upt.cti.photogmap.photographerfragments.GalleryPhotographerFragment;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -253,6 +258,15 @@ public class PhotographerAdapterClient extends RecyclerView.Adapter<Photographer
             @Override
             public void onClick(View v) {
                 System.out.println(photographer.getFirstName());
+                AppCompatActivity activity =(AppCompatActivity) v.getContext();
+                GalleryPhotographerFragment_Client galleryPhotographerFragment_client = new GalleryPhotographerFragment_Client();
+                Bundle args = new Bundle();
+
+                Spinner spinner = activity.findViewById(R.id.filterLocality);
+                spinner.setVisibility(View.GONE);
+                args.putString("photographerId",photographer.getUserId());
+                galleryPhotographerFragment_client.setArguments(args);
+                activity.getSupportFragmentManager().beginTransaction().replace(R.id.containerClient, galleryPhotographerFragment_client).commit();
 
                 //Todo : Open photographer gallery when click on its image
             }
