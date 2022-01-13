@@ -1,52 +1,37 @@
 package com.upt.cti.photogmap;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.storage.StorageReference;
-import com.upt.cti.photogmap.clientfragments.VotePhotographerFragment;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class PhotographerAdapterClient extends RecyclerView.Adapter<PhotographerAdapterClient.PhotographerClientViewHolder>{
+public class PhotographerAdapterClientFavorite extends RecyclerView.Adapter<PhotographerAdapterClientFavorite.PhotographerClientViewHolder>{
     private static final int POSITION_NONE = 0;
     private String userType;
 
@@ -54,7 +39,7 @@ public class PhotographerAdapterClient extends RecyclerView.Adapter<Photographer
     ArrayList<Photographer> photographerArrayList;
     BottomNavigationView navigationBar;
 
-    public PhotographerAdapterClient(Context context, ArrayList<Photographer> photographerArrayList, BottomNavigationView navigationBar) {
+    public PhotographerAdapterClientFavorite(Context context, ArrayList<Photographer> photographerArrayList, BottomNavigationView navigationBar) {
         this.context = context;
 
         this.photographerArrayList = photographerArrayList;
@@ -63,10 +48,10 @@ public class PhotographerAdapterClient extends RecyclerView.Adapter<Photographer
 
     @NonNull
     @Override
-    public PhotographerAdapterClient.PhotographerClientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PhotographerAdapterClientFavorite.PhotographerClientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
 
-        View v = LayoutInflater.from(context).inflate(R.layout.photographer_item_rank_for_client, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.photographer_item_rank_for_client_favorites, parent, false);
 
 
         return new PhotographerClientViewHolder(v);
@@ -75,7 +60,7 @@ public class PhotographerAdapterClient extends RecyclerView.Adapter<Photographer
 
 
     @Override
-    public void onBindViewHolder(@NonNull PhotographerAdapterClient.PhotographerClientViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PhotographerAdapterClientFavorite.PhotographerClientViewHolder holder, int position) {
 
         Photographer photographer = photographerArrayList.get(position);
 
@@ -267,49 +252,6 @@ public class PhotographerAdapterClient extends RecyclerView.Adapter<Photographer
           }
       });
 
-      holder.btnAddFavoritePhotographer.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              FirebaseFirestore firebaseFirestore;
-              FirebaseAuth firebaseAuth;
-              firebaseFirestore = FirebaseFirestore.getInstance();
-              firebaseAuth = FirebaseAuth.getInstance();
-
-              String userId = Objects.requireNonNull(firebaseAuth.getCurrentUser()).getUid();
-
-
-              DocumentReference documentReference = firebaseFirestore.collection("Favorites").document(userId+photographer.getUserId());
-
-              documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                                @RequiresApi(api = Build.VERSION_CODES.N)
-                                                                @Override
-                                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                                    if (task.isSuccessful()) {
-                                                                        DocumentSnapshot documentSnapshot = task.getResult();
-
-                                                                        Map<String, Object> favorites = new HashMap<>();
-                                                                        favorites.put("Client", userId);
-                                                                        favorites.put("Photographer", photographer.getUserId());
-                                                                        favorites.put("country", photographer.getCountry());
-                                                                        favorites.put("county", photographer.getCounty());
-                                                                        favorites.put("firstName", photographer.getFirstName());
-                                                                        favorites.put("lastName", photographer.getLastName());
-                                                                        favorites.put("locality", photographer.getLocality());
-                                                                        favorites.put("mail", photographer.getMail());
-                                                                        favorites.put("noOfVotes", photographer.getNoOfVotes());
-                                                                        favorites.put("phoneNumber", photographer.getPhoneNumber());
-                                                                        favorites.put("score", photographer.getScore());
-                                                                        favorites.put("userId",photographer.getUserId());
-                                                                        documentReference.set(favorites);
-
-
-                                                                    }
-                                                                }
-                                                            });
-                holder.btnAddFavoritePhotographer.setVisibility(View.GONE);
-              Toast.makeText(v.getContext(), "Adăugat la favorite...", Toast.LENGTH_SHORT).show();
-          }
-      });
 
     }
 
@@ -352,7 +294,7 @@ public class PhotographerAdapterClient extends RecyclerView.Adapter<Photographer
 
         RelativeLayout photographerEntry;
         RatingBar ratingPhotographer;
-        Button btnAddFavoritePhotographer;
+
 
         Button btnVote;
         TextView firstName, lastName, mail, phoneNumber, score, noOfVotes, locality, county, country;
@@ -381,7 +323,7 @@ public class PhotographerAdapterClient extends RecyclerView.Adapter<Photographer
             country = itemView.findViewById(R.id.tPhotographerCountry_Client);
             county = itemView.findViewById(R.id.tPhotographerCounty_Client);
             imgProfilePicturePhotographerItem = itemView.findViewById(R.id.imgProfilePicturePhotographerItem_Client);
-            btnAddFavoritePhotographer = itemView.findViewById(R.id.btnAddFavoritePhotographer);
+
 
         }
     }

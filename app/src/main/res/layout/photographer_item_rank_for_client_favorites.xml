@@ -31,22 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/imgProfilePicturePhotographerItem_Client">
 
-            <Button
-                android:id="@+id/btnAddFavoritePhotographer"
-                android:layout_width="80dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/custom_button"
-                android:focusableInTouchMode="true"
-                android:foreground="@drawable/ic_favorites"
-                android:foregroundGravity="center"
-                android:foregroundTint="@color/black"
-                android:gravity="center"
-                android:textSize="5dp"
-                android:textStyle="bold"
-                app:backgroundTint="#37F403"
-                tools:ignore="SpeakableTextPresentCheck" />
+
 
 
         </FrameLayout>

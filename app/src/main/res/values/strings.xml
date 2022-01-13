@@ -56,4 +56,11 @@
     <string name="salveaza_locatia_curenta">Salvează locația curentă</string>
     <string name="fara_locatie">Fara locatie</string>
     <string name="localitate">Localitate</string>
+    <string name="vote">Vote</string>
+    <string name="favorites">Favorites</string>
+    <string name="favorite">Favorite</string>
+    <string name="clasament">Clasament</string>
+    <string name="profil">Profil</string>
+    <string name="deconectare">Deconectare</string>
+    <string name="pozele_mele">Pozele mele</string>
 </resources>

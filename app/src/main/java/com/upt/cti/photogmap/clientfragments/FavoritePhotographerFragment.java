@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -30,21 +32,21 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.upt.cti.photogmap.Photographer;
 import com.upt.cti.photogmap.PhotographerAdapterClient;
+import com.upt.cti.photogmap.PhotographerAdapterClientFavorite;
 import com.upt.cti.photogmap.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link VotePhotographerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class VotePhotographerFragment extends Fragment{
+public class FavoritePhotographerFragment extends Fragment{
 
     private ArrayList<Photographer> photographersList;
-    private PhotographerAdapterClient photographerAdapterClient;
+    private PhotographerAdapterClientFavorite photographerAdapterClientFavorite;
     private static String filter = "All";
 
 
@@ -61,7 +63,7 @@ public class VotePhotographerFragment extends Fragment{
     private String mParam1;
     private String mParam2;
 
-    public VotePhotographerFragment() {
+    public FavoritePhotographerFragment() {
         // Required empty public constructor
     }
 
@@ -110,6 +112,8 @@ public class VotePhotographerFragment extends Fragment{
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
+
+
                     for (QueryDocumentSnapshot document: task.getResult()) {
                         String locality = document.getString("locality");
                         System.out.println(locality);
@@ -118,8 +122,6 @@ public class VotePhotographerFragment extends Fragment{
                             filterArray.add(locality);
                         }
                     }
-
-                    filterArray.add("favorites");
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, filterArray);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -161,9 +163,9 @@ public class VotePhotographerFragment extends Fragment{
 
 
 
-                photographerAdapterClient = new PhotographerAdapterClient(getActivity(), photographersList, getActivity().findViewById(R.id.navClient));
+                photographerAdapterClientFavorite = new PhotographerAdapterClientFavorite(getActivity(), photographersList, getActivity().findViewById(R.id.navClient));
 
-                recyclerPhotographersList_Client.setAdapter(photographerAdapterClient);
+                recyclerPhotographersList_Client.setAdapter(photographerAdapterClientFavorite);
 
 
 
@@ -173,8 +175,8 @@ public class VotePhotographerFragment extends Fragment{
                 pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        VotePhotographerFragment votePhotographerFragment = new VotePhotographerFragment();
-                        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.containerClient, votePhotographerFragment).commit();
+                        FavoritePhotographerFragment favoritePhotographerFragment = new FavoritePhotographerFragment();
+                        requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.containerClient, favoritePhotographerFragment).commit();
                         pullToRefresh.setRefreshing(false);
                     }
                 });
@@ -195,13 +197,11 @@ public class VotePhotographerFragment extends Fragment{
     }
 
     private void EventChangeListener() {
-        List <String> list = new ArrayList<>();
         Query query;
         if (filter == "All"){
             query = firebaseFirestore.collection("Users").orderBy("score", Query.Direction.DESCENDING);
-        }
-        else {
-             query = firebaseFirestore.collection("Users").orderBy("score", Query.Direction.DESCENDING).whereEqualTo("locality",filter);
+        } else {
+            query = firebaseFirestore.collection("Users").orderBy("score", Query.Direction.DESCENDING).whereEqualTo("locality",filter);
         }
         query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -217,17 +217,48 @@ public class VotePhotographerFragment extends Fragment{
                     return;
                 }
 
-                assert value != null;
-                for (DocumentChange documentChange : value.getDocumentChanges()){
-                    photographersList.add(documentChange.getDocument().toObject(Photographer.class));
-                }
+                List<String> list = new ArrayList<String>();
+                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                String userId = firebaseAuth.getCurrentUser().getUid();
+                firebaseFirestore.collection("Favorites").whereEqualTo("Client", userId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                list.add(documentSnapshot.getString("Photographer"));
+                            }
+
+                            assert value != null;
+                            for (DocumentChange documentChange : value.getDocumentChanges()){
+
+                                boolean ok = false;
+                                for (String favoritePhotographer : list
+                                ) {
+                                    if (documentChange.getDocument().getId().equals(favoritePhotographer)){
+                                        ok = true;
+                                    }
+                                }
+
+                                if (ok)
+                                    photographersList.add(documentChange.getDocument().toObject(Photographer.class));
+
+                            }
+
+                            photographerAdapterClientFavorite.notifyDataSetChanged();
+                            photographersList = new ArrayList<Photographer>();
+                            if (progressDialog.isShowing()) {
+                                progressDialog.dismiss();
+                            }
+                        }
 
 
-                photographerAdapterClient.notifyDataSetChanged();
-                photographersList = new ArrayList<Photographer>();
-                if (progressDialog.isShowing()) {
-                    progressDialog.dismiss();
-                }
+
+                    }
+                });
+
+
+
+
             }
         });
 

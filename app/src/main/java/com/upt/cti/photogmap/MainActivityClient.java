@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.upt.cti.photogmap.clientfragments.FavoritePhotographerFragment;
 import com.upt.cti.photogmap.clientfragments.VotePhotographerFragment;
 
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ public class MainActivityClient extends AppCompatActivity {
     private static int lastSelectedItem = 0;
     BottomNavigationView navClient;
     VotePhotographerFragment voteClientFragment = new VotePhotographerFragment();
+    FavoritePhotographerFragment favoritePhotographerFragment = new FavoritePhotographerFragment();
     Spinner filterLocality;
 
 
@@ -51,7 +54,9 @@ public class MainActivityClient extends AppCompatActivity {
                             return true;
 
                         case R.id.ic_favorites:
-                            Objects.requireNonNull(getSupportActionBar()).hide();
+                            lastSelectedItem = 1;
+                            Button button = findViewById(R.id.btnAddFavoritePhotographer);
+                            getSupportFragmentManager().beginTransaction().replace(R.id.containerClient, favoritePhotographerFragment).commit();
                             return true;
 
                         case R.id.ic_logout:
