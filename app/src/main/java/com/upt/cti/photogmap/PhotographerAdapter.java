@@ -1,6 +1,7 @@
 package com.upt.cti.photogmap;
 
 import android.content.Context;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -14,15 +15,20 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -33,6 +39,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PhotographerAdapter extends RecyclerView.Adapter<PhotographerAdapter.PhotographerViewHolder>{
     private String userType;
+    StorageReference storageReference;
     Context context;
     ArrayList<Photographer> photographerArrayList;
 
@@ -54,7 +61,32 @@ public class PhotographerAdapter extends RecyclerView.Adapter<PhotographerAdapte
 
     @Override
     public void onBindViewHolder(@NonNull PhotographerAdapter.PhotographerViewHolder holder, int position) {
-      Photographer photographer = photographerArrayList.get(position);
+
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
+
+        Photographer photographer = photographerArrayList.get(position);
+
+
+
+        StorageReference profileReference = storageReference.child("Users/" + photographer.getUserId() + "/profile.jpg");
+
+
+        profileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+
+                Picasso.with(context).load(uri).into(holder.imgProfilePicturePhotographerItem);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+
 
 
 
@@ -67,6 +99,7 @@ public class PhotographerAdapter extends RecyclerView.Adapter<PhotographerAdapte
       holder.county.setText(String.valueOf(photographer.getCounty()));
       holder.country.setText(String.valueOf(photographer.getCountry()));
       holder.locality.setText(String.valueOf(photographer.getLocality()));
+
        float avg = (float) photographer.getScore() / (float) photographer.getNoOfVotes();
        holder.tAvg.setText(String.valueOf(avg));
 

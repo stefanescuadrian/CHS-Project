@@ -1,6 +1,7 @@
 package com.upt.cti.photogmap;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,12 +21,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 import com.upt.cti.photogmap.clientfragments.GalleryPhotographerFragment_Client;
 
 import java.util.ArrayList;
@@ -68,7 +74,26 @@ public class PhotographerAdapterClientFavorite extends RecyclerView.Adapter<Phot
 
         Photographer photographer = photographerArrayList.get(position);
 
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
+
+        StorageReference profileReference = storageReference.child("Users/" + photographer.getUserId() + "/profile.jpg");
+
+
+        profileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+
+                Picasso.with(context).load(uri).into(holder.imgProfilePicturePhotographerItem);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
 
         holder.firstName.setText(photographer.getFirstName());
         holder.lastName.setText(photographer.getLastName());
@@ -103,8 +128,6 @@ public class PhotographerAdapterClientFavorite extends RecyclerView.Adapter<Phot
 
 
 
-
-
              DocumentReference documentReference = firebaseFirestore.collection("Votes").document(userId+photographer.getUserId());
 
              documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -136,9 +159,6 @@ public class PhotographerAdapterClientFavorite extends RecyclerView.Adapter<Phot
 
                                            int scoreFromDatabase =  Integer.valueOf(Math.toIntExact(documentSnapshot1.getLong("score")));
 
-
-
-
                                            int score = (int) (holder.ratingPhotographer.getRating() + scoreFromDatabase - lastScore);
 
 
@@ -162,8 +182,6 @@ public class PhotographerAdapterClientFavorite extends RecyclerView.Adapter<Phot
                            }
                            else {
                                documentReference.set(vote).addOnSuccessListener(unused -> Log.d("TAG", "onSuccess: Votul a fost actualizat cu succes " + userId));
-
-
                                DocumentReference documentReference1 = firebaseFirestore.collection("Users").document(photographer.getUserId());
 
 
@@ -174,8 +192,6 @@ public class PhotographerAdapterClientFavorite extends RecyclerView.Adapter<Phot
                                            DocumentSnapshot documentSnapshot1 = task.getResult();
                                            int noOfVotesFromDatabase = photographer.getNoOfVotes();
                                            int scoreFromDatabase = photographer.getScore();
-
-
 
 
                                            int noOfVotes = 1 + noOfVotesFromDatabase;

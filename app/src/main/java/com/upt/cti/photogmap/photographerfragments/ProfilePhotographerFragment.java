@@ -183,6 +183,7 @@ public class ProfilePhotographerFragment extends Fragment {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         resultReceiver = new AddressResultReceiver(new Handler());
         progressBarLoadLocation = view.findViewById(R.id.progressBarLoadLocation);
+
         btnSaveLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,7 +204,7 @@ public class ProfilePhotographerFragment extends Fragment {
         StorageReference profileReference = storageReference.child("Users/" + firebaseAuth.getCurrentUser().getUid() + "/profile.jpg");
 
 
-            profileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        profileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
 
@@ -212,7 +213,7 @@ public class ProfilePhotographerFragment extends Fragment {
                     imgProfilePicture.setVisibility(View.VISIBLE);
                     fabChangeProfilePicture.setVisibility(View.VISIBLE);
                 }
-            }).addOnFailureListener(new OnFailureListener() {
+        }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     progressBarLoadPicture.setVisibility(View.INVISIBLE);
@@ -220,8 +221,6 @@ public class ProfilePhotographerFragment extends Fragment {
                     fabChangeProfilePicture.setVisibility(View.VISIBLE);
                 }
             });
-
-
 
 
 
