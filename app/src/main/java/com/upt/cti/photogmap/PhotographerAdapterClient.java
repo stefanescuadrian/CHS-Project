@@ -91,13 +91,7 @@ public class PhotographerAdapterClient extends RecyclerView.Adapter<Photographer
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
-
-
-
-
         StorageReference profileReference = storageReference.child("Users/" + photographer.getUserId() + "/profile.jpg");
-
-
         profileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {

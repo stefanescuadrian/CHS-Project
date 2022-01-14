@@ -119,8 +119,10 @@ public class FavoritePhotographerFragment extends Fragment{
                         System.out.println(locality);
                         System.out.println("\n");
                         if (locality != null) {
-                            filterArray.add(locality);
-                        }
+                            if (!filterArray.contains(locality)) {
+                                filterArray.add(locality);
+                                }
+                            }
                     }
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, filterArray);
