@@ -47,7 +47,7 @@ public class FavoritePhotographerFragment extends Fragment{
 
     private ArrayList<Photographer> photographersList;
     private PhotographerAdapterClientFavorite photographerAdapterClientFavorite;
-    private static String filter = "All";
+    private static String filter = "Toate";
 
 
     private FirebaseFirestore firebaseFirestore;
@@ -105,7 +105,7 @@ public class FavoritePhotographerFragment extends Fragment{
         firebaseFirestore = FirebaseFirestore.getInstance();
         List<String> filterArray = new ArrayList<String>();
         spinnerWithLocality = getActivity().findViewById(R.id.filterLocality);
-        filterArray.add("All");
+        filterArray.add("Toate");
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         firebaseFirestore.collection("Users").whereEqualTo("userType", "Fotograf").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -198,7 +198,7 @@ public class FavoritePhotographerFragment extends Fragment{
 
     private void EventChangeListener() {
         Query query;
-        if (filter == "All"){
+        if (filter == "Toate"){
             query = firebaseFirestore.collection("Users").orderBy("score", Query.Direction.DESCENDING);
         } else {
             query = firebaseFirestore.collection("Users").orderBy("score", Query.Direction.DESCENDING).whereEqualTo("locality",filter);

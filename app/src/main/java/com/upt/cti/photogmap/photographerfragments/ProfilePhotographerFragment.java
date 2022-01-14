@@ -203,9 +203,6 @@ public class ProfilePhotographerFragment extends Fragment {
         StorageReference profileReference = storageReference.child("Users/" + firebaseAuth.getCurrentUser().getUid() + "/profile.jpg");
 
 
-       // boolean profilePhotoExists = profileReference.getDownloadUrl().isSuccessful();
-
-
             profileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {

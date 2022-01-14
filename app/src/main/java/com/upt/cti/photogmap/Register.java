@@ -144,11 +144,11 @@ public class Register extends AppCompatActivity {
 
                     documentReference.set(user).addOnSuccessListener(unused -> Log.d("TAG", "onSuccess: Profilul utilizatorului a fost creat pentru: " + userID));
                     if (role.equals("Client")){
-                        startActivity(new Intent(getApplicationContext(), MainActivityClient.class));
+                        startActivity(new Intent(getApplicationContext(), HelloClientActivity.class));
 
                     }
                     else {
-                        startActivity(new Intent(getApplicationContext(), MainActivityPhotographer.class));
+                        startActivity(new Intent(getApplicationContext(), HelloPhotographerActivity.class));
                     }
 
                 } else {
@@ -165,39 +165,39 @@ public class Register extends AppCompatActivity {
 
     private boolean validateRegisterFields(String email, String password, String confirmPassword, String firstName, String lastName){
         if (TextUtils.isEmpty(firstName)){
-            eFirstNameRegister.setError("First Name is required!");
+            eFirstNameRegister.setError("Prenumele trebuie introdus!");
             return false;
         }
 
         if (TextUtils.isEmpty(lastName)){
-            eLastNameRegister.setError("Last Name is required!");
+            eLastNameRegister.setError("Numele de familie trebuie introdus!");
             return false;
         }
 
         if (TextUtils.isEmpty(email)){
-            eEmailRegister.setError("Email is required!");
+            eEmailRegister.setError("Mailul este necesar!");
             return false;
         }
 
         if (TextUtils.isEmpty(password)){
-            ePasswordRegister.setError("Password is required!");
+            ePasswordRegister.setError("Parola este necesară!");
             return false;
         }
 
         if (password.length() < 8){
-            ePasswordRegister.setError("Password must be greater than 8 characters!");
+            ePasswordRegister.setError("Parola trebuie să fie mai mare de 8 caractere");
             return false;
         }
 
 
         if (TextUtils.isEmpty(confirmPassword)){
-            eConfirmPasswordRegister.setError("Confirm Password is required!");
+            eConfirmPasswordRegister.setError("Confirmarea parolei e necesară!");
             return false;
         }
 
 
         if (!(password.equals(confirmPassword))){
-            eConfirmPasswordRegister.setError("Confirm password is not the same with your password!");
+            eConfirmPasswordRegister.setError("Parolele nu coincid!");
             return false;
         }
 

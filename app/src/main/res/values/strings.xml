@@ -63,4 +63,8 @@
     <string name="profil">Profil</string>
     <string name="deconectare">Deconectare</string>
     <string name="pozele_mele">Pozele mele</string>
+    <string name="salut">Salut!</string>
+    <string name="text_hello_client">Găsește cel mai bun fotograf cu Photog Map!</string>
+    <string name="hello_photographer_message">Fii gata să ajungi cel mai bun fotograf din zona ta și nu doar ! </string>
+    <string name="hello_photographer_message_2">Urmărește-ți concurența cu Photog Map!</string>
 </resources>
